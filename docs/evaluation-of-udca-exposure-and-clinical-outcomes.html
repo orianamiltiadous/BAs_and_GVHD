@@ -23,7 +23,7 @@
 <meta name="author" content="Oriana Miltiadous" />
 
 
-<meta name="date" content="2023-08-07" />
+<meta name="date" content="2023-08-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -251,81 +251,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 8</span> Evaluation of UDCA exposure and clinical outcomes<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluation-of-udca-exposure-and-clinical-outcomes" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="prepare-the-patient-outcome-table" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Prepare the patient outcome table<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#prepare-the-patient-outcome-table" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycmprsk)</span>
-<span id="cb42-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsurvfit)</span>
-<span id="cb42-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycmprsk)</span>
-<span id="cb42-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
-<span id="cb42-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-6" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="ot">&lt;-</span>patients_urso_CIF <span class="sc">%&gt;%</span> </span>
-<span id="cb42-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality=</span><span class="fu">ifelse</span>(death<span class="sc">==</span>F <span class="sc">&amp;</span> relapse<span class="sc">==</span>F <span class="sc">&amp;</span> pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>, <span class="dv">0</span>,</span>
-<span id="cb42-8"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-8" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">ifelse</span>(relapse<span class="sc">==</span>T <span class="sc">|</span> pod <span class="sc">==</span><span class="st">&quot;Y&quot;</span> <span class="sc">|</span> (cod<span class="sc">==</span><span class="st">&quot;Disease Progression&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Recurrence of primary disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Malignant disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Relapse&quot;</span>),<span class="dv">2</span>,                                  <span class="fu">ifelse</span>(cod<span class="sc">==</span><span class="st">&quot;GvHD&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;GvHD/Infection&quot;</span><span class="sc">|</span>(gvhd<span class="sc">==</span>T <span class="sc">&amp;</span> death<span class="sc">==</span>T),<span class="dv">1</span>,<span class="dv">3</span>)))) <span class="sc">%&gt;%</span> </span>
-<span id="cb42-9"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(GRM_mortality),<span class="dv">3</span>,GRM_mortality)) <span class="sc">%&gt;%</span> </span>
-<span id="cb42-10"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality =</span> <span class="fu">factor</span>(GRM_mortality,<span class="at">levels=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>, <span class="st">&quot;GRM&quot;</span>, <span class="st">&quot;Relapse/PoD&quot;</span>,<span class="st">&quot;Other&quot;</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb42-11"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality=</span><span class="fu">ifelse</span>(death<span class="sc">==</span>F <span class="sc">&amp;</span> relapse<span class="sc">==</span>F <span class="sc">&amp;</span> pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>, <span class="dv">0</span>,</span>
-<span id="cb42-12"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-12" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">ifelse</span>(relapse<span class="sc">==</span>T <span class="sc">|</span> pod <span class="sc">==</span><span class="st">&quot;Y&quot;</span> <span class="sc">|</span> (cod<span class="sc">==</span><span class="st">&quot;Disease Progression&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Recurrence of primary disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Malignant disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Relapse&quot;</span>),<span class="dv">2</span>, <span class="dv">1</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb42-13"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(TRM_mortality),<span class="dv">1</span>,TRM_mortality)) <span class="sc">%&gt;%</span> </span>
-<span id="cb42-14"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality =</span> <span class="fu">factor</span>(TRM_mortality,<span class="at">levels=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,<span class="st">&quot;TRM&quot;</span>,<span class="st">&quot;Relapse/PoD&quot;</span>)))</span>
-<span id="cb42-15"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-16"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(patients_urso_CIF2<span class="sc">$</span>GRM_mortality)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycmprsk)</span>
+<span id="cb38-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsurvfit)</span>
+<span id="cb38-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycmprsk)</span>
+<span id="cb38-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb38-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-6" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="ot">&lt;-</span>patients_urso_CIF <span class="sc">%&gt;%</span> </span>
+<span id="cb38-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality=</span><span class="fu">ifelse</span>(death<span class="sc">==</span>F <span class="sc">&amp;</span> relapse<span class="sc">==</span>F <span class="sc">&amp;</span> pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>, <span class="dv">0</span>,</span>
+<span id="cb38-8"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-8" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">ifelse</span>(relapse<span class="sc">==</span>T <span class="sc">|</span> pod <span class="sc">==</span><span class="st">&quot;Y&quot;</span> <span class="sc">|</span> (cod<span class="sc">==</span><span class="st">&quot;Disease Progression&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Recurrence of primary disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Malignant disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Relapse&quot;</span>),<span class="dv">2</span>,                                  <span class="fu">ifelse</span>(cod<span class="sc">==</span><span class="st">&quot;GvHD&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;GvHD/Infection&quot;</span><span class="sc">|</span>(gvhd<span class="sc">==</span>T <span class="sc">&amp;</span> death<span class="sc">==</span>T),<span class="dv">1</span>,<span class="dv">3</span>)))) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-9"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(GRM_mortality),<span class="dv">3</span>,GRM_mortality)) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-10"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality =</span> <span class="fu">factor</span>(GRM_mortality,<span class="at">levels=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>, <span class="st">&quot;GRM&quot;</span>, <span class="st">&quot;Relapse/PoD&quot;</span>,<span class="st">&quot;Other&quot;</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-11"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality=</span><span class="fu">ifelse</span>(death<span class="sc">==</span>F <span class="sc">&amp;</span> relapse<span class="sc">==</span>F <span class="sc">&amp;</span> pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>, <span class="dv">0</span>,</span>
+<span id="cb38-12"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-12" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">ifelse</span>(relapse<span class="sc">==</span>T <span class="sc">|</span> pod <span class="sc">==</span><span class="st">&quot;Y&quot;</span> <span class="sc">|</span> (cod<span class="sc">==</span><span class="st">&quot;Disease Progression&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Recurrence of primary disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Malignant disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Relapse&quot;</span>),<span class="dv">2</span>, <span class="dv">1</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-13"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(TRM_mortality),<span class="dv">1</span>,TRM_mortality)) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-14"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality =</span> <span class="fu">factor</span>(TRM_mortality,<span class="at">levels=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,<span class="st">&quot;TRM&quot;</span>,<span class="st">&quot;Relapse/PoD&quot;</span>)))</span>
+<span id="cb38-15"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-16"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(patients_urso_CIF2<span class="sc">$</span>GRM_mortality)</span></code></pre></div>
 <pre><code>## 
 ##    Censored         GRM Relapse/PoD       Other 
 ##         624         191         386         100</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-1" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time <span class="ot">&lt;-</span> patients_urso_CIF2<span class="sc">$</span>OS</span>
-<span id="cb44-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-2" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>]</span>
-<span id="cb44-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-3" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>]</span>
-<span id="cb44-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-4" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> <span class="fu">min</span>(patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>],</span>
-<span id="cb44-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-5" aria-hidden="true" tabindex="-1"></a>                                                                                            patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>])</span>
-<span id="cb44-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-7" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time <span class="ot">&lt;-</span> patients_urso_CIF2<span class="sc">$</span>OS</span>
-<span id="cb44-8"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-8" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>]</span>
-<span id="cb44-9"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-9" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>]</span>
-<span id="cb44-10"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-10" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> <span class="fu">min</span>(patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>],</span>
-<span id="cb44-11"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-11" aria-hidden="true" tabindex="-1"></a>                                                                                            patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>])</span>
-<span id="cb44-12"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-13"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-13" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2 <span class="ot">&lt;-</span> patients_urso_CIF2 <span class="sc">%&gt;%</span> </span>
-<span id="cb44-14"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality_2yr =</span> <span class="fu">ifelse</span>(GRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">1</span>,GRM_mortality), </span>
-<span id="cb44-15"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">GRM_time_2yr =</span> <span class="fu">ifelse</span>(GRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,GRM_time), </span>
-<span id="cb44-16"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_mortality_2yr =</span> <span class="fu">ifelse</span>(TRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">1</span>,TRM_mortality), </span>
-<span id="cb44-17"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_time_2yr =</span> <span class="fu">ifelse</span>(TRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,TRM_time), </span>
-<span id="cb44-18"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">death_2yr =</span> <span class="fu">ifelse</span>(OS <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="cn">FALSE</span>,death), </span>
-<span id="cb44-19"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">OS_2yr =</span> <span class="fu">ifelse</span>(OS <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,OS),</span>
-<span id="cb44-20"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">GRM_mortality_2yr =</span> <span class="fu">factor</span>(GRM_mortality_2yr,<span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,<span class="st">&quot;GRM&quot;</span>,<span class="st">&quot;Relapse/PoD&quot;</span>,  <span class="st">&quot;Other&quot;</span>)),  </span>
-<span id="cb44-21"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_mortality_2yr =</span> <span class="fu">factor</span>(TRM_mortality_2yr,<span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,  <span class="st">&quot;TRM&quot;</span>, <span class="st">&quot;Relapse/PoD&quot;</span>)))</span>
-<span id="cb44-22"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-23"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-23" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2 <span class="ot">&lt;-</span> patients_urso_CIF2 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">donor_new=</span><span class="fu">ifelse</span>(donor_match<span class="sc">==</span><span class="st">&quot;MMRD&quot;</span>, <span class="st">&quot;haplo&quot;</span>, donor_match))</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-1" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time <span class="ot">&lt;-</span> patients_urso_CIF2<span class="sc">$</span>OS</span>
+<span id="cb40-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-2" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>]</span>
+<span id="cb40-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-3" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>]</span>
+<span id="cb40-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-4" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> <span class="fu">min</span>(patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>],</span>
+<span id="cb40-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-5" aria-hidden="true" tabindex="-1"></a>                                                                                            patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>])</span>
+<span id="cb40-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-7" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time <span class="ot">&lt;-</span> patients_urso_CIF2<span class="sc">$</span>OS</span>
+<span id="cb40-8"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-8" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>]</span>
+<span id="cb40-9"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-9" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>]</span>
+<span id="cb40-10"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-10" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> <span class="fu">min</span>(patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>],</span>
+<span id="cb40-11"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-11" aria-hidden="true" tabindex="-1"></a>                                                                                            patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>])</span>
+<span id="cb40-12"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-13"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-13" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2 <span class="ot">&lt;-</span> patients_urso_CIF2 <span class="sc">%&gt;%</span> </span>
+<span id="cb40-14"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality_2yr =</span> <span class="fu">ifelse</span>(GRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">1</span>,GRM_mortality), </span>
+<span id="cb40-15"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">GRM_time_2yr =</span> <span class="fu">ifelse</span>(GRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,GRM_time), </span>
+<span id="cb40-16"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_mortality_2yr =</span> <span class="fu">ifelse</span>(TRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">1</span>,TRM_mortality), </span>
+<span id="cb40-17"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_time_2yr =</span> <span class="fu">ifelse</span>(TRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,TRM_time), </span>
+<span id="cb40-18"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">death_2yr =</span> <span class="fu">ifelse</span>(OS <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="cn">FALSE</span>,death), </span>
+<span id="cb40-19"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">OS_2yr =</span> <span class="fu">ifelse</span>(OS <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,OS),</span>
+<span id="cb40-20"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">GRM_mortality_2yr =</span> <span class="fu">factor</span>(GRM_mortality_2yr,<span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,<span class="st">&quot;GRM&quot;</span>,<span class="st">&quot;Relapse/PoD&quot;</span>,  <span class="st">&quot;Other&quot;</span>)),  </span>
+<span id="cb40-21"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_mortality_2yr =</span> <span class="fu">factor</span>(TRM_mortality_2yr,<span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,  <span class="st">&quot;TRM&quot;</span>, <span class="st">&quot;Relapse/PoD&quot;</span>)))</span>
+<span id="cb40-22"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-23"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb40-23" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2 <span class="ot">&lt;-</span> patients_urso_CIF2 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">donor_new=</span><span class="fu">ifelse</span>(donor_match<span class="sc">==</span><span class="st">&quot;MMRD&quot;</span>, <span class="st">&quot;haplo&quot;</span>, donor_match))</span></code></pre></div>
 </div>
 <div id="evaluate-ursodiol-exposure-and-overall-survival" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> Evaluate ursodiol exposure and overall survival<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluate-ursodiol-exposure-and-overall-survival" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="univariable-analysis" class="section level3 hasAnchor" number="8.2.1">
 <h3><span class="header-section-number">8.2.1</span> Univariable analysis<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#univariable-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-1" aria-hidden="true" tabindex="-1"></a>KM.OS <span class="ot">&lt;-</span> <span class="fu">survfit2</span>(<span class="fu">Surv</span>(OS_2yr,<span class="fu">as.numeric</span>(death_2yr))<span class="sc">~</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
-<span id="cb45-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-2" aria-hidden="true" tabindex="-1"></a>KM.OS <span class="sc">%&gt;%</span> <span class="fu">ggsurvfit</span>() <span class="sc">+</span></span>
-<span id="cb45-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_censor_mark</span>() <span class="sc">+</span></span>
-<span id="cb45-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_confidence_interval</span>() <span class="sc">+</span></span>
-<span id="cb45-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>(<span class="at">times=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">24</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb41-1" aria-hidden="true" tabindex="-1"></a>KM.OS <span class="ot">&lt;-</span> <span class="fu">survfit2</span>(<span class="fu">Surv</span>(OS_2yr,<span class="fu">as.numeric</span>(death_2yr))<span class="sc">~</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
+<span id="cb41-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb41-2" aria-hidden="true" tabindex="-1"></a>KM.OS <span class="sc">%&gt;%</span> <span class="fu">ggsurvfit</span>() <span class="sc">+</span></span>
+<span id="cb41-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_censor_mark</span>() <span class="sc">+</span></span>
+<span id="cb41-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_confidence_interval</span>() <span class="sc">+</span></span>
+<span id="cb41-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>(<span class="at">times=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">24</span>))</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 </div>
 <div id="multivariable-analysis" class="section level3 hasAnchor" number="8.2.2">
 <h3><span class="header-section-number">8.2.2</span> Multivariable analysis<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb46-1" aria-hidden="true" tabindex="-1"></a>coxfit <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">coxph</span>(<span class="fu">Surv</span>(OS_2yr,<span class="fu">as.numeric</span>(death_2yr))<span class="sc">~</span>age<span class="sc">+</span>sex<span class="sc">+</span>donor_match<span class="sc">+</span>graft<span class="sc">+</span>intensity<span class="sc">+</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
-<span id="cb46-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb46-2" aria-hidden="true" tabindex="-1"></a>coxfit <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>(<span class="at">exponentiate=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">bold_p</span>()</span></code></pre></div>
-<div id="jpviwpltzn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jpviwpltzn table {
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-1" aria-hidden="true" tabindex="-1"></a>coxfit <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">coxph</span>(<span class="fu">Surv</span>(OS_2yr,<span class="fu">as.numeric</span>(death_2yr))<span class="sc">~</span>age<span class="sc">+</span>sex<span class="sc">+</span>donor_match<span class="sc">+</span>graft<span class="sc">+</span>intensity<span class="sc">+</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
+<span id="cb42-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-2" aria-hidden="true" tabindex="-1"></a>coxfit <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>(<span class="at">exponentiate=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">bold_p</span>()</span></code></pre></div>
+<div id="mbzzavaywa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mbzzavaywa table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#jpviwpltzn thead, #jpviwpltzn tbody, #jpviwpltzn tfoot, #jpviwpltzn tr, #jpviwpltzn td, #jpviwpltzn th {
+#mbzzavaywa thead, #mbzzavaywa tbody, #mbzzavaywa tfoot, #mbzzavaywa tr, #mbzzavaywa td, #mbzzavaywa th {
   border-style: none;
 }
 
-#jpviwpltzn p {
+#mbzzavaywa p {
   margin: 0;
   padding: 0;
 }
 
-#jpviwpltzn .gt_table {
+#mbzzavaywa .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -351,12 +351,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-left-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_caption {
+#mbzzavaywa .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#jpviwpltzn .gt_title {
+#mbzzavaywa .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -368,7 +368,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-width: 0;
 }
 
-#jpviwpltzn .gt_subtitle {
+#mbzzavaywa .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -380,7 +380,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-width: 0;
 }
 
-#jpviwpltzn .gt_heading {
+#mbzzavaywa .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -392,13 +392,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_bottom_border {
+#mbzzavaywa .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_col_headings {
+#mbzzavaywa .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -413,7 +413,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_col_heading {
+#mbzzavaywa .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -433,7 +433,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#jpviwpltzn .gt_column_spanner_outer {
+#mbzzavaywa .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -445,15 +445,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 4px;
 }
 
-#jpviwpltzn .gt_column_spanner_outer:first-child {
+#mbzzavaywa .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jpviwpltzn .gt_column_spanner_outer:last-child {
+#mbzzavaywa .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jpviwpltzn .gt_column_spanner {
+#mbzzavaywa .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -465,11 +465,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   width: 100%;
 }
 
-#jpviwpltzn .gt_spanner_row {
+#mbzzavaywa .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#jpviwpltzn .gt_group_heading {
+#mbzzavaywa .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -495,7 +495,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   text-align: left;
 }
 
-#jpviwpltzn .gt_empty_group_heading {
+#mbzzavaywa .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -510,15 +510,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: middle;
 }
 
-#jpviwpltzn .gt_from_md > :first-child {
+#mbzzavaywa .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jpviwpltzn .gt_from_md > :last-child {
+#mbzzavaywa .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jpviwpltzn .gt_row {
+#mbzzavaywa .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -537,7 +537,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#jpviwpltzn .gt_stub {
+#mbzzavaywa .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -550,7 +550,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jpviwpltzn .gt_stub_row_group {
+#mbzzavaywa .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -564,15 +564,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: top;
 }
 
-#jpviwpltzn .gt_row_group_first td {
+#mbzzavaywa .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jpviwpltzn .gt_row_group_first th {
+#mbzzavaywa .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#jpviwpltzn .gt_summary_row {
+#mbzzavaywa .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -582,16 +582,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jpviwpltzn .gt_first_summary_row {
+#mbzzavaywa .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_first_summary_row.thick {
+#mbzzavaywa .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jpviwpltzn .gt_last_summary_row {
+#mbzzavaywa .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -601,7 +601,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_grand_summary_row {
+#mbzzavaywa .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -611,7 +611,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jpviwpltzn .gt_first_grand_summary_row {
+#mbzzavaywa .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -621,7 +621,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_last_grand_summary_row_top {
+#mbzzavaywa .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -631,11 +631,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_striped {
+#mbzzavaywa .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jpviwpltzn .gt_table_body {
+#mbzzavaywa .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -644,7 +644,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_footnotes {
+#mbzzavaywa .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -658,7 +658,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_footnote {
+#mbzzavaywa .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -667,7 +667,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jpviwpltzn .gt_sourcenotes {
+#mbzzavaywa .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -681,7 +681,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#jpviwpltzn .gt_sourcenote {
+#mbzzavaywa .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -689,63 +689,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jpviwpltzn .gt_left {
+#mbzzavaywa .gt_left {
   text-align: left;
 }
 
-#jpviwpltzn .gt_center {
+#mbzzavaywa .gt_center {
   text-align: center;
 }
 
-#jpviwpltzn .gt_right {
+#mbzzavaywa .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jpviwpltzn .gt_font_normal {
+#mbzzavaywa .gt_font_normal {
   font-weight: normal;
 }
 
-#jpviwpltzn .gt_font_bold {
+#mbzzavaywa .gt_font_bold {
   font-weight: bold;
 }
 
-#jpviwpltzn .gt_font_italic {
+#mbzzavaywa .gt_font_italic {
   font-style: italic;
 }
 
-#jpviwpltzn .gt_super {
+#mbzzavaywa .gt_super {
   font-size: 65%;
 }
 
-#jpviwpltzn .gt_footnote_marks {
+#mbzzavaywa .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#jpviwpltzn .gt_asterisk {
+#mbzzavaywa .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jpviwpltzn .gt_indent_1 {
+#mbzzavaywa .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jpviwpltzn .gt_indent_2 {
+#mbzzavaywa .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jpviwpltzn .gt_indent_3 {
+#mbzzavaywa .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jpviwpltzn .gt_indent_4 {
+#mbzzavaywa .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jpviwpltzn .gt_indent_5 {
+#mbzzavaywa .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -867,29 +867,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">8.3</span> Evaluation of cumulative incidences<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluation-of-cumulative-incidences" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="cumulative-incidence-of-gvhd-related-mortality" class="section level3 hasAnchor" number="8.3.1">
 <h3><span class="header-section-number">8.3.1</span> Cumulative incidence of GVHD-related mortality<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-gvhd-related-mortality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="ot">&lt;-</span> <span class="fu">cuminc</span>(<span class="fu">Surv</span>(GRM_time_2yr, GRM_mortality_2yr)<span class="sc">~</span>ursodiol2, <span class="at">data=</span>patients_urso_CIF2)</span>
-<span id="cb47-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-3" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;GRM&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb47-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb47-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb47-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: GRM&quot;</span>)</span></code></pre></div>
-<div id="uwolvayijk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#uwolvayijk table {
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb43-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="ot">&lt;-</span> <span class="fu">cuminc</span>(<span class="fu">Surv</span>(GRM_time_2yr, GRM_mortality_2yr)<span class="sc">~</span>ursodiol2, <span class="at">data=</span>patients_urso_CIF2)</span>
+<span id="cb43-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb43-3" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;GRM&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb43-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb43-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: GRM&quot;</span>)</span></code></pre></div>
+<div id="toiyxowsla" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#toiyxowsla table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#uwolvayijk thead, #uwolvayijk tbody, #uwolvayijk tfoot, #uwolvayijk tr, #uwolvayijk td, #uwolvayijk th {
+#toiyxowsla thead, #toiyxowsla tbody, #toiyxowsla tfoot, #toiyxowsla tr, #toiyxowsla td, #toiyxowsla th {
   border-style: none;
 }
 
-#uwolvayijk p {
+#toiyxowsla p {
   margin: 0;
   padding: 0;
 }
 
-#uwolvayijk .gt_table {
+#toiyxowsla .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -915,12 +915,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-left-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_caption {
+#toiyxowsla .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#uwolvayijk .gt_title {
+#toiyxowsla .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -932,7 +932,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-width: 0;
 }
 
-#uwolvayijk .gt_subtitle {
+#toiyxowsla .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -944,7 +944,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-width: 0;
 }
 
-#uwolvayijk .gt_heading {
+#toiyxowsla .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -956,13 +956,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_bottom_border {
+#toiyxowsla .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_col_headings {
+#toiyxowsla .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -977,7 +977,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_col_heading {
+#toiyxowsla .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -997,7 +997,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#uwolvayijk .gt_column_spanner_outer {
+#toiyxowsla .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1009,15 +1009,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 4px;
 }
 
-#uwolvayijk .gt_column_spanner_outer:first-child {
+#toiyxowsla .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uwolvayijk .gt_column_spanner_outer:last-child {
+#toiyxowsla .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uwolvayijk .gt_column_spanner {
+#toiyxowsla .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1029,11 +1029,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   width: 100%;
 }
 
-#uwolvayijk .gt_spanner_row {
+#toiyxowsla .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#uwolvayijk .gt_group_heading {
+#toiyxowsla .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1059,7 +1059,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   text-align: left;
 }
 
-#uwolvayijk .gt_empty_group_heading {
+#toiyxowsla .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1074,15 +1074,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: middle;
 }
 
-#uwolvayijk .gt_from_md > :first-child {
+#toiyxowsla .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uwolvayijk .gt_from_md > :last-child {
+#toiyxowsla .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uwolvayijk .gt_row {
+#toiyxowsla .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1101,7 +1101,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#uwolvayijk .gt_stub {
+#toiyxowsla .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1114,7 +1114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#uwolvayijk .gt_stub_row_group {
+#toiyxowsla .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1128,15 +1128,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: top;
 }
 
-#uwolvayijk .gt_row_group_first td {
+#toiyxowsla .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uwolvayijk .gt_row_group_first th {
+#toiyxowsla .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#uwolvayijk .gt_summary_row {
+#toiyxowsla .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1146,16 +1146,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#uwolvayijk .gt_first_summary_row {
+#toiyxowsla .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_first_summary_row.thick {
+#toiyxowsla .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uwolvayijk .gt_last_summary_row {
+#toiyxowsla .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1165,7 +1165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_grand_summary_row {
+#toiyxowsla .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1175,7 +1175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#uwolvayijk .gt_first_grand_summary_row {
+#toiyxowsla .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1185,7 +1185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_last_grand_summary_row_top {
+#toiyxowsla .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1195,11 +1195,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_striped {
+#toiyxowsla .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uwolvayijk .gt_table_body {
+#toiyxowsla .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1208,7 +1208,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_footnotes {
+#toiyxowsla .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1222,7 +1222,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_footnote {
+#toiyxowsla .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1231,7 +1231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#uwolvayijk .gt_sourcenotes {
+#toiyxowsla .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1245,7 +1245,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#uwolvayijk .gt_sourcenote {
+#toiyxowsla .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1253,63 +1253,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#uwolvayijk .gt_left {
+#toiyxowsla .gt_left {
   text-align: left;
 }
 
-#uwolvayijk .gt_center {
+#toiyxowsla .gt_center {
   text-align: center;
 }
 
-#uwolvayijk .gt_right {
+#toiyxowsla .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uwolvayijk .gt_font_normal {
+#toiyxowsla .gt_font_normal {
   font-weight: normal;
 }
 
-#uwolvayijk .gt_font_bold {
+#toiyxowsla .gt_font_bold {
   font-weight: bold;
 }
 
-#uwolvayijk .gt_font_italic {
+#toiyxowsla .gt_font_italic {
   font-style: italic;
 }
 
-#uwolvayijk .gt_super {
+#toiyxowsla .gt_super {
   font-size: 65%;
 }
 
-#uwolvayijk .gt_footnote_marks {
+#toiyxowsla .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#uwolvayijk .gt_asterisk {
+#toiyxowsla .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uwolvayijk .gt_indent_1 {
+#toiyxowsla .gt_indent_1 {
   text-indent: 5px;
 }
 
-#uwolvayijk .gt_indent_2 {
+#toiyxowsla .gt_indent_2 {
   text-indent: 10px;
 }
 
-#uwolvayijk .gt_indent_3 {
+#toiyxowsla .gt_indent_3 {
   text-indent: 15px;
 }
 
-#uwolvayijk .gt_indent_4 {
+#toiyxowsla .gt_indent_4 {
   text-indent: 20px;
 }
 
-#uwolvayijk .gt_indent_5 {
+#toiyxowsla .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1358,38 +1358,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </tfoot>
 </table>
 </div>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">ggcuminc</span>(<span class="at">outcome=</span><span class="st">&quot;GRM&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb48-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb48-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Months after HCT&quot;</span>,</span>
-<span id="cb48-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Cumulative Incidence (GRM)&quot;</span></span>
-<span id="cb48-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb48-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_confidence_interval</span>() <span class="sc">+</span></span>
-<span id="cb48-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>(<span class="at">times=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">ggcuminc</span>(<span class="at">outcome=</span><span class="st">&quot;GRM&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb44-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb44-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Months after HCT&quot;</span>,</span>
+<span id="cb44-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Cumulative Incidence (GRM)&quot;</span></span>
+<span id="cb44-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb44-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_confidence_interval</span>() <span class="sc">+</span></span>
+<span id="cb44-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>(<span class="at">times=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>))</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 </div>
 <div id="cumulative-incidence-of-relapseprogression-of-disease" class="section level3 hasAnchor" number="8.3.2">
 <h3><span class="header-section-number">8.3.2</span> Cumulative incidence of Relapse/progression of disease<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-relapseprogression-of-disease" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb49-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;Relapse/PoD&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb49-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb49-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb49-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: Relapse/PoD&quot;</span>)</span></code></pre></div>
-<div id="upzhjkufam" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#upzhjkufam table {
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;Relapse/PoD&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb45-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb45-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: Relapse/PoD&quot;</span>)</span></code></pre></div>
+<div id="ibmmtylcng" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ibmmtylcng table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#upzhjkufam thead, #upzhjkufam tbody, #upzhjkufam tfoot, #upzhjkufam tr, #upzhjkufam td, #upzhjkufam th {
+#ibmmtylcng thead, #ibmmtylcng tbody, #ibmmtylcng tfoot, #ibmmtylcng tr, #ibmmtylcng td, #ibmmtylcng th {
   border-style: none;
 }
 
-#upzhjkufam p {
+#ibmmtylcng p {
   margin: 0;
   padding: 0;
 }
 
-#upzhjkufam .gt_table {
+#ibmmtylcng .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1415,12 +1415,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-left-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_caption {
+#ibmmtylcng .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#upzhjkufam .gt_title {
+#ibmmtylcng .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1432,7 +1432,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-width: 0;
 }
 
-#upzhjkufam .gt_subtitle {
+#ibmmtylcng .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1444,7 +1444,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-width: 0;
 }
 
-#upzhjkufam .gt_heading {
+#ibmmtylcng .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1456,13 +1456,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_bottom_border {
+#ibmmtylcng .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_col_headings {
+#ibmmtylcng .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1477,7 +1477,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_col_heading {
+#ibmmtylcng .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1497,7 +1497,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#upzhjkufam .gt_column_spanner_outer {
+#ibmmtylcng .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1509,15 +1509,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 4px;
 }
 
-#upzhjkufam .gt_column_spanner_outer:first-child {
+#ibmmtylcng .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#upzhjkufam .gt_column_spanner_outer:last-child {
+#ibmmtylcng .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#upzhjkufam .gt_column_spanner {
+#ibmmtylcng .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1529,11 +1529,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   width: 100%;
 }
 
-#upzhjkufam .gt_spanner_row {
+#ibmmtylcng .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#upzhjkufam .gt_group_heading {
+#ibmmtylcng .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1559,7 +1559,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   text-align: left;
 }
 
-#upzhjkufam .gt_empty_group_heading {
+#ibmmtylcng .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1574,15 +1574,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: middle;
 }
 
-#upzhjkufam .gt_from_md > :first-child {
+#ibmmtylcng .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#upzhjkufam .gt_from_md > :last-child {
+#ibmmtylcng .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#upzhjkufam .gt_row {
+#ibmmtylcng .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1601,7 +1601,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#upzhjkufam .gt_stub {
+#ibmmtylcng .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1614,7 +1614,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#upzhjkufam .gt_stub_row_group {
+#ibmmtylcng .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1628,15 +1628,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: top;
 }
 
-#upzhjkufam .gt_row_group_first td {
+#ibmmtylcng .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#upzhjkufam .gt_row_group_first th {
+#ibmmtylcng .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#upzhjkufam .gt_summary_row {
+#ibmmtylcng .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1646,16 +1646,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#upzhjkufam .gt_first_summary_row {
+#ibmmtylcng .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_first_summary_row.thick {
+#ibmmtylcng .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#upzhjkufam .gt_last_summary_row {
+#ibmmtylcng .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1665,7 +1665,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_grand_summary_row {
+#ibmmtylcng .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1675,7 +1675,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#upzhjkufam .gt_first_grand_summary_row {
+#ibmmtylcng .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1685,7 +1685,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_last_grand_summary_row_top {
+#ibmmtylcng .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1695,11 +1695,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_striped {
+#ibmmtylcng .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#upzhjkufam .gt_table_body {
+#ibmmtylcng .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1708,7 +1708,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_footnotes {
+#ibmmtylcng .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1722,7 +1722,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_footnote {
+#ibmmtylcng .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1731,7 +1731,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#upzhjkufam .gt_sourcenotes {
+#ibmmtylcng .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1745,7 +1745,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#upzhjkufam .gt_sourcenote {
+#ibmmtylcng .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1753,63 +1753,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#upzhjkufam .gt_left {
+#ibmmtylcng .gt_left {
   text-align: left;
 }
 
-#upzhjkufam .gt_center {
+#ibmmtylcng .gt_center {
   text-align: center;
 }
 
-#upzhjkufam .gt_right {
+#ibmmtylcng .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#upzhjkufam .gt_font_normal {
+#ibmmtylcng .gt_font_normal {
   font-weight: normal;
 }
 
-#upzhjkufam .gt_font_bold {
+#ibmmtylcng .gt_font_bold {
   font-weight: bold;
 }
 
-#upzhjkufam .gt_font_italic {
+#ibmmtylcng .gt_font_italic {
   font-style: italic;
 }
 
-#upzhjkufam .gt_super {
+#ibmmtylcng .gt_super {
   font-size: 65%;
 }
 
-#upzhjkufam .gt_footnote_marks {
+#ibmmtylcng .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#upzhjkufam .gt_asterisk {
+#ibmmtylcng .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#upzhjkufam .gt_indent_1 {
+#ibmmtylcng .gt_indent_1 {
   text-indent: 5px;
 }
 
-#upzhjkufam .gt_indent_2 {
+#ibmmtylcng .gt_indent_2 {
   text-indent: 10px;
 }
 
-#upzhjkufam .gt_indent_3 {
+#ibmmtylcng .gt_indent_3 {
   text-indent: 15px;
 }
 
-#upzhjkufam .gt_indent_4 {
+#ibmmtylcng .gt_indent_4 {
   text-indent: 20px;
 }
 
-#upzhjkufam .gt_indent_5 {
+#ibmmtylcng .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1861,27 +1861,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="cumulative-incidence-of-mortality-non-related-to-gvhd-or-relapseprogression-of-disease" class="section level3 hasAnchor" number="8.3.3">
 <h3><span class="header-section-number">8.3.3</span> Cumulative incidence of mortality non-related to GVHD or relapse/progression of disease<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-mortality-non-related-to-gvhd-or-relapseprogression-of-disease" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb50-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;Other&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb50-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb50-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb50-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: Other&quot;</span>)</span></code></pre></div>
-<div id="jxphmmokhs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jxphmmokhs table {
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb46-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;Other&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb46-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb46-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: Other&quot;</span>)</span></code></pre></div>
+<div id="vvrzrdoufo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vvrzrdoufo table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#jxphmmokhs thead, #jxphmmokhs tbody, #jxphmmokhs tfoot, #jxphmmokhs tr, #jxphmmokhs td, #jxphmmokhs th {
+#vvrzrdoufo thead, #vvrzrdoufo tbody, #vvrzrdoufo tfoot, #vvrzrdoufo tr, #vvrzrdoufo td, #vvrzrdoufo th {
   border-style: none;
 }
 
-#jxphmmokhs p {
+#vvrzrdoufo p {
   margin: 0;
   padding: 0;
 }
 
-#jxphmmokhs .gt_table {
+#vvrzrdoufo .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1907,12 +1907,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-left-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_caption {
+#vvrzrdoufo .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#jxphmmokhs .gt_title {
+#vvrzrdoufo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1924,7 +1924,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-width: 0;
 }
 
-#jxphmmokhs .gt_subtitle {
+#vvrzrdoufo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1936,7 +1936,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-width: 0;
 }
 
-#jxphmmokhs .gt_heading {
+#vvrzrdoufo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1948,13 +1948,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_bottom_border {
+#vvrzrdoufo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_col_headings {
+#vvrzrdoufo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1969,7 +1969,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_col_heading {
+#vvrzrdoufo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1989,7 +1989,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#jxphmmokhs .gt_column_spanner_outer {
+#vvrzrdoufo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2001,15 +2001,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 4px;
 }
 
-#jxphmmokhs .gt_column_spanner_outer:first-child {
+#vvrzrdoufo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jxphmmokhs .gt_column_spanner_outer:last-child {
+#vvrzrdoufo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jxphmmokhs .gt_column_spanner {
+#vvrzrdoufo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2021,11 +2021,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   width: 100%;
 }
 
-#jxphmmokhs .gt_spanner_row {
+#vvrzrdoufo .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#jxphmmokhs .gt_group_heading {
+#vvrzrdoufo .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2051,7 +2051,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   text-align: left;
 }
 
-#jxphmmokhs .gt_empty_group_heading {
+#vvrzrdoufo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2066,15 +2066,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: middle;
 }
 
-#jxphmmokhs .gt_from_md > :first-child {
+#vvrzrdoufo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jxphmmokhs .gt_from_md > :last-child {
+#vvrzrdoufo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jxphmmokhs .gt_row {
+#vvrzrdoufo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2093,7 +2093,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#jxphmmokhs .gt_stub {
+#vvrzrdoufo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2106,7 +2106,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jxphmmokhs .gt_stub_row_group {
+#vvrzrdoufo .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2120,15 +2120,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: top;
 }
 
-#jxphmmokhs .gt_row_group_first td {
+#vvrzrdoufo .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jxphmmokhs .gt_row_group_first th {
+#vvrzrdoufo .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#jxphmmokhs .gt_summary_row {
+#vvrzrdoufo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2138,16 +2138,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jxphmmokhs .gt_first_summary_row {
+#vvrzrdoufo .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_first_summary_row.thick {
+#vvrzrdoufo .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jxphmmokhs .gt_last_summary_row {
+#vvrzrdoufo .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2157,7 +2157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_grand_summary_row {
+#vvrzrdoufo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2167,7 +2167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jxphmmokhs .gt_first_grand_summary_row {
+#vvrzrdoufo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2177,7 +2177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_last_grand_summary_row_top {
+#vvrzrdoufo .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2187,11 +2187,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_striped {
+#vvrzrdoufo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jxphmmokhs .gt_table_body {
+#vvrzrdoufo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2200,7 +2200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_footnotes {
+#vvrzrdoufo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2214,7 +2214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_footnote {
+#vvrzrdoufo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2223,7 +2223,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jxphmmokhs .gt_sourcenotes {
+#vvrzrdoufo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2237,7 +2237,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#jxphmmokhs .gt_sourcenote {
+#vvrzrdoufo .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2245,63 +2245,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#jxphmmokhs .gt_left {
+#vvrzrdoufo .gt_left {
   text-align: left;
 }
 
-#jxphmmokhs .gt_center {
+#vvrzrdoufo .gt_center {
   text-align: center;
 }
 
-#jxphmmokhs .gt_right {
+#vvrzrdoufo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jxphmmokhs .gt_font_normal {
+#vvrzrdoufo .gt_font_normal {
   font-weight: normal;
 }
 
-#jxphmmokhs .gt_font_bold {
+#vvrzrdoufo .gt_font_bold {
   font-weight: bold;
 }
 
-#jxphmmokhs .gt_font_italic {
+#vvrzrdoufo .gt_font_italic {
   font-style: italic;
 }
 
-#jxphmmokhs .gt_super {
+#vvrzrdoufo .gt_super {
   font-size: 65%;
 }
 
-#jxphmmokhs .gt_footnote_marks {
+#vvrzrdoufo .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#jxphmmokhs .gt_asterisk {
+#vvrzrdoufo .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jxphmmokhs .gt_indent_1 {
+#vvrzrdoufo .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jxphmmokhs .gt_indent_2 {
+#vvrzrdoufo .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jxphmmokhs .gt_indent_3 {
+#vvrzrdoufo .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jxphmmokhs .gt_indent_4 {
+#vvrzrdoufo .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jxphmmokhs .gt_indent_5 {
+#vvrzrdoufo .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2353,25 +2353,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="multivariable-analysis-of-gvhd-related-mortality" class="section level3 hasAnchor" number="8.3.4">
 <h3><span class="header-section-number">8.3.4</span> Multivariable analysis of GVHD-related mortality<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis-of-gvhd-related-mortality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb51-1" aria-hidden="true" tabindex="-1"></a>fgmodel.GRM <span class="ot">&lt;-</span> <span class="fu">crr</span>(<span class="fu">Surv</span>(GRM_time_2yr,GRM_mortality_2yr)<span class="sc">~</span>age<span class="sc">+</span>sex<span class="sc">+</span>donor_match<span class="sc">+</span>graft<span class="sc">+</span>intensity<span class="sc">+</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
-<span id="cb51-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb51-2" aria-hidden="true" tabindex="-1"></a>fgmodel.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>(<span class="at">exponentiate=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">bold_p</span>()</span></code></pre></div>
-<div id="xyalqbgvhf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#xyalqbgvhf table {
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-1" aria-hidden="true" tabindex="-1"></a>fgmodel.GRM <span class="ot">&lt;-</span> <span class="fu">crr</span>(<span class="fu">Surv</span>(GRM_time_2yr,GRM_mortality_2yr)<span class="sc">~</span>age<span class="sc">+</span>sex<span class="sc">+</span>donor_match<span class="sc">+</span>graft<span class="sc">+</span>intensity<span class="sc">+</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
+<span id="cb47-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-2" aria-hidden="true" tabindex="-1"></a>fgmodel.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>(<span class="at">exponentiate=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">bold_p</span>()</span></code></pre></div>
+<div id="axokcemeqo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#axokcemeqo table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#xyalqbgvhf thead, #xyalqbgvhf tbody, #xyalqbgvhf tfoot, #xyalqbgvhf tr, #xyalqbgvhf td, #xyalqbgvhf th {
+#axokcemeqo thead, #axokcemeqo tbody, #axokcemeqo tfoot, #axokcemeqo tr, #axokcemeqo td, #axokcemeqo th {
   border-style: none;
 }
 
-#xyalqbgvhf p {
+#axokcemeqo p {
   margin: 0;
   padding: 0;
 }
 
-#xyalqbgvhf .gt_table {
+#axokcemeqo .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2397,12 +2397,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-left-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_caption {
+#axokcemeqo .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#xyalqbgvhf .gt_title {
+#axokcemeqo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2414,7 +2414,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-width: 0;
 }
 
-#xyalqbgvhf .gt_subtitle {
+#axokcemeqo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2426,7 +2426,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-width: 0;
 }
 
-#xyalqbgvhf .gt_heading {
+#axokcemeqo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2438,13 +2438,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_bottom_border {
+#axokcemeqo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_col_headings {
+#axokcemeqo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2459,7 +2459,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_col_heading {
+#axokcemeqo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2479,7 +2479,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#xyalqbgvhf .gt_column_spanner_outer {
+#axokcemeqo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2491,15 +2491,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 4px;
 }
 
-#xyalqbgvhf .gt_column_spanner_outer:first-child {
+#axokcemeqo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xyalqbgvhf .gt_column_spanner_outer:last-child {
+#axokcemeqo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xyalqbgvhf .gt_column_spanner {
+#axokcemeqo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2511,11 +2511,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   width: 100%;
 }
 
-#xyalqbgvhf .gt_spanner_row {
+#axokcemeqo .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#xyalqbgvhf .gt_group_heading {
+#axokcemeqo .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2541,7 +2541,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   text-align: left;
 }
 
-#xyalqbgvhf .gt_empty_group_heading {
+#axokcemeqo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2556,15 +2556,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: middle;
 }
 
-#xyalqbgvhf .gt_from_md > :first-child {
+#axokcemeqo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xyalqbgvhf .gt_from_md > :last-child {
+#axokcemeqo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xyalqbgvhf .gt_row {
+#axokcemeqo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2583,7 +2583,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#xyalqbgvhf .gt_stub {
+#axokcemeqo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2596,7 +2596,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#xyalqbgvhf .gt_stub_row_group {
+#axokcemeqo .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2610,15 +2610,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: top;
 }
 
-#xyalqbgvhf .gt_row_group_first td {
+#axokcemeqo .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xyalqbgvhf .gt_row_group_first th {
+#axokcemeqo .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#xyalqbgvhf .gt_summary_row {
+#axokcemeqo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2628,16 +2628,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#xyalqbgvhf .gt_first_summary_row {
+#axokcemeqo .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_first_summary_row.thick {
+#axokcemeqo .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xyalqbgvhf .gt_last_summary_row {
+#axokcemeqo .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2647,7 +2647,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_grand_summary_row {
+#axokcemeqo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2657,7 +2657,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#xyalqbgvhf .gt_first_grand_summary_row {
+#axokcemeqo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2667,7 +2667,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_last_grand_summary_row_top {
+#axokcemeqo .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2677,11 +2677,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_striped {
+#axokcemeqo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xyalqbgvhf .gt_table_body {
+#axokcemeqo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2690,7 +2690,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_footnotes {
+#axokcemeqo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2704,7 +2704,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_footnote {
+#axokcemeqo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2713,7 +2713,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#xyalqbgvhf .gt_sourcenotes {
+#axokcemeqo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2727,7 +2727,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#xyalqbgvhf .gt_sourcenote {
+#axokcemeqo .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2735,63 +2735,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#xyalqbgvhf .gt_left {
+#axokcemeqo .gt_left {
   text-align: left;
 }
 
-#xyalqbgvhf .gt_center {
+#axokcemeqo .gt_center {
   text-align: center;
 }
 
-#xyalqbgvhf .gt_right {
+#axokcemeqo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xyalqbgvhf .gt_font_normal {
+#axokcemeqo .gt_font_normal {
   font-weight: normal;
 }
 
-#xyalqbgvhf .gt_font_bold {
+#axokcemeqo .gt_font_bold {
   font-weight: bold;
 }
 
-#xyalqbgvhf .gt_font_italic {
+#axokcemeqo .gt_font_italic {
   font-style: italic;
 }
 
-#xyalqbgvhf .gt_super {
+#axokcemeqo .gt_super {
   font-size: 65%;
 }
 
-#xyalqbgvhf .gt_footnote_marks {
+#axokcemeqo .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#xyalqbgvhf .gt_asterisk {
+#axokcemeqo .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xyalqbgvhf .gt_indent_1 {
+#axokcemeqo .gt_indent_1 {
   text-indent: 5px;
 }
 
-#xyalqbgvhf .gt_indent_2 {
+#axokcemeqo .gt_indent_2 {
   text-indent: 10px;
 }
 
-#xyalqbgvhf .gt_indent_3 {
+#axokcemeqo .gt_indent_3 {
   text-indent: 15px;
 }
 
-#xyalqbgvhf .gt_indent_4 {
+#axokcemeqo .gt_indent_4 {
   text-indent: 20px;
 }
 
-#xyalqbgvhf .gt_indent_5 {
+#axokcemeqo .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
