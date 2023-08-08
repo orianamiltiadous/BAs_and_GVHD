@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Evaluation of UDCA exposure and clinical outcomes | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</title>
+  <meta name="description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Evaluation of UDCA exposure and clinical outcomes | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Evaluation of UDCA exposure and clinical outcomes | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
+  
+  <meta name="twitter:description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  
+
+<meta name="author" content="Oriana Miltiadous" />
+
+
+<meta name="date" content="2023-08-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="diversity-bai-operon-and-domination.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html"><i class="fa fa-check"></i><b>1</b> Introduction: load the datasets</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html#load-packages"><i class="fa fa-check"></i><b>1.1</b> Load packages</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html#load-datasets"><i class="fa fa-check"></i><b>1.2</b> Load datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><i class="fa fa-check"></i><b>2</b> Analyze the effect of UDCA administration on the bile acid pool (supplementary figure 5)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#plot-ursodiol-exposure-and-secondary-bas-concentrations"><i class="fa fa-check"></i><b>2.1</b> Plot ursodiol exposure and secondary BAs concentrations</a></li>
+<li class="chapter" data-level="2.2" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#plot-correlation-of-ursodiol-with-other-bile-acid-pools-plot-conjugated-udca-tauroursodeoxycholic_acidglycoursodeoxycholic_acid-tbas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-total-bas-total_nonudca_pool-nonudca-sbas-secondary_nonudca-secondaryprimary-ratio-sp_ratio"><i class="fa fa-check"></i><b>2.2</b> Plot correlation of ursodiol with other bile acid pools: plot conjugated UDCA (tauroursodeoxycholic_acid+glycoursodeoxycholic_acid), TBAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA total BAs (total_nonUDCA_pool), nonUDCA SBAs (secondary_nonUDCA), secondary/primary ratio (SP_ratio)</a></li>
+<li class="chapter" data-level="2.3" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#create-correlation-plots-to-evaluate-association-of-udca-with-all-individual-bas"><i class="fa fa-check"></i><b>2.3</b> Create correlation plots to evaluate association of UDCA with all individual BAs</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#visualization-of-significant-correlations-of-udca-with-individual-bas-r0.4"><i class="fa fa-check"></i><b>2.3.1</b> Visualization of significant correlations of UDCA with individual BAs (R&gt;0.4)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><i class="fa fa-check"></i><b>3</b> Create the bile acid pools (figure 4, supplementary figure 6,8)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-ba-pools-first-for-peri-gvhd-onset-timepoint"><i class="fa fa-check"></i><b>3.1</b> Create BA pools first for peri-GVHD-onset timepoint</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#plot-tbas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-sbas-secondary_nonudca-conjugated-conjugated_pool-unconjugated-unconjugated_pool-sulfated-sulfated_pool"><i class="fa fa-check"></i><b>3.1.1</b> Plot: TBAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA SBAs (secondary_nonUDCA), conjugated (conjugated_pool), unconjugated (unconjugated_pool), sulfated (sulfated_pool)</a></li>
+<li class="chapter" data-level="3.1.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-pies"><i class="fa fa-check"></i><b>3.1.2</b> Create pies</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-ba-pools-for-peri-engraftment-timepoint"><i class="fa fa-check"></i><b>3.2</b> Create BA pools for peri-engraftment timepoint</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#plot-ba-pools-and-gvhd-can-plot-total-bas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-sbas-secondary_nonudca-conjugated-conjugated_pool-unconjugated-unconjugated_pool-sulfated_pool-secondaryprimary-ratio-and-secondaryprimary-ratio"><i class="fa fa-check"></i><b>3.2.1</b> Plot BA pools and GVHD; can plot total BAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA SBAs (secondary_nonUDCA), conjugated (conjugated_pool), unconjugated (unconjugated_pool), sulfated_pool, secondary/primary ratio and secondary*/primary ratio</a></li>
+<li class="chapter" data-level="3.2.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-pies-1"><i class="fa fa-check"></i><b>3.2.2</b> Create pies</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><i class="fa fa-check"></i><b>4</b> Evaluate T cell modulatory BAs in patients with GVHD vs controls (figure 4)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#oxolca"><i class="fa fa-check"></i><b>4.1</b> 3oxoLCA</a></li>
+<li class="chapter" data-level="4.2" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#isolca"><i class="fa fa-check"></i><b>4.2</b> isoLCA</a></li>
+<li class="chapter" data-level="4.3" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#isodca"><i class="fa fa-check"></i><b>4.3</b> isoDCA</a></li>
+<li class="chapter" data-level="4.4" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#omca"><i class="fa fa-check"></i><b>4.4</b> OMCA</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><i class="fa fa-check"></i><b>5</b> Shotgun metagenomic sequencing: Evaluate genes of interest (figure 5, supplement figure 10)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bsh"><i class="fa fa-check"></i><b>5.1</b> BSH</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-bsh-abundance-at-peri-gvhd-onset"><i class="fa fa-check"></i><b>5.1.1</b> Evaluate BSH abundance at peri-GVHD onset</a></li>
+<li class="chapter" data-level="5.1.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-bsh-abundance-at-peri-engraftment-time-point"><i class="fa fa-check"></i><b>5.1.2</b> Evaluate BSH abundance at peri-engraftment time point</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-gene"><i class="fa fa-check"></i><b>5.2</b> Bai operon gene</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-correlation-of-bai-operon-gene-sum-and-nonudca-secondary-bas"><i class="fa fa-check"></i><b>5.2.1</b> Evaluate correlation of bai operon gene sum and nonUDCA secondary BAs</a></li>
+<li class="chapter" data-level="5.2.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-gene-sum-in-peri-gvhd-onset"><i class="fa fa-check"></i><b>5.2.2</b> Bai operon gene sum in peri-GVHD onset</a></li>
+<li class="chapter" data-level="5.2.3" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-individual-gene-abundance"><i class="fa fa-check"></i><b>5.2.3</b> Bai operon individual gene abundance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bile-acid-related-bacteria"><i class="fa fa-check"></i><b>5.3</b> Bile acid related bacteria</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#eggerthella-lenta"><i class="fa fa-check"></i><b>5.3.1</b> Eggerthella lenta</a></li>
+<li class="chapter" data-level="5.3.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#ruminococcus-gnavus"><i class="fa fa-check"></i><b>5.3.2</b> Ruminococcus gnavus</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><i class="fa fa-check"></i><b>6</b> Create landscape of all peri-GVHD-onset samples (figure 5)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#define-sample-order-from-higher-nonudca-secondary-bas-to-lower"><i class="fa fa-check"></i><b>6.1</b> Define sample order from higher nonUDCA secondary BAs to lower</a></li>
+<li class="chapter" data-level="6.2" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#gi-gvhd-plot"><i class="fa fa-check"></i><b>6.2</b> GI GVHD plot</a></li>
+<li class="chapter" data-level="6.3" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#sba-plot"><i class="fa fa-check"></i><b>6.3</b> SBA plot</a></li>
+<li class="chapter" data-level="6.4" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#a-diversity-plot"><i class="fa fa-check"></i><b>6.4</b> A-diversity plot</a></li>
+<li class="chapter" data-level="6.5" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#bile-acid-related-genes"><i class="fa fa-check"></i><b>6.5</b> Bile acid related genes</a></li>
+<li class="chapter" data-level="6.6" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#microbiome-composition"><i class="fa fa-check"></i><b>6.6</b> Microbiome composition</a></li>
+<li class="chapter" data-level="6.7" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#add-all-plots-together"><i class="fa fa-check"></i><b>6.7</b> Add all plots together</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html"><i class="fa fa-check"></i><b>7</b> Diversity, bai operon and domination</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#evaluate-correlation-of-a-diversity-and-bai-operon-sum"><i class="fa fa-check"></i><b>7.1</b> Evaluate correlation of a-diversity and bai operon sum</a></li>
+<li class="chapter" data-level="7.2" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#identify-patients-with-monodomination-by-16s"><i class="fa fa-check"></i><b>7.2</b> Identify patients with monodomination by 16S</a></li>
+<li class="chapter" data-level="7.3" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#domination-and-a-diversity"><i class="fa fa-check"></i><b>7.3</b> Domination and a-diversity</a></li>
+<li class="chapter" data-level="7.4" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#domination-and-bai-operon"><i class="fa fa-check"></i><b>7.4</b> Domination and bai operon</a></li>
+<li class="chapter" data-level="7.5" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#sbas-and-domination"><i class="fa fa-check"></i><b>7.5</b> SBAs and domination</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html"><i class="fa fa-check"></i><b>8</b> Evaluation of UDCA exposure and clinical outcomes</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#prepare-the-patient-outcome-table"><i class="fa fa-check"></i><b>8.1</b> Prepare the patient outcome table</a></li>
+<li class="chapter" data-level="8.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluate-ursodiol-exposure-and-overall-survival"><i class="fa fa-check"></i><b>8.2</b> Evaluate ursodiol exposure and overall survival</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#univariable-analysis"><i class="fa fa-check"></i><b>8.2.1</b> Univariable analysis</a></li>
+<li class="chapter" data-level="8.2.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Multivariable analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluation-of-cumulative-incidences"><i class="fa fa-check"></i><b>8.3</b> Evaluation of cumulative incidences</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-gvhd-related-mortality"><i class="fa fa-check"></i><b>8.3.1</b> Cumulative incidence of GVHD-related mortality</a></li>
+<li class="chapter" data-level="8.3.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-relapseprogression-of-disease"><i class="fa fa-check"></i><b>8.3.2</b> Cumulative incidence of Relapse/progression of disease</a></li>
+<li class="chapter" data-level="8.3.3" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-mortality-non-related-to-gvhd-or-relapseprogression-of-disease"><i class="fa fa-check"></i><b>8.3.3</b> Cumulative incidence of mortality non-related to GVHD or relapse/progression of disease</a></li>
+<li class="chapter" data-level="8.3.4" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis-of-gvhd-related-mortality"><i class="fa fa-check"></i><b>8.3.4</b> Multivariable analysis of GVHD-related mortality</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="evaluation-of-udca-exposure-and-clinical-outcomes" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Evaluation of UDCA exposure and clinical outcomes<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluation-of-udca-exposure-and-clinical-outcomes" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="prepare-the-patient-outcome-table" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Prepare the patient outcome table<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#prepare-the-patient-outcome-table" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycmprsk)</span>
+<span id="cb42-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsurvfit)</span>
+<span id="cb42-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycmprsk)</span>
+<span id="cb42-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb42-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-6" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="ot">&lt;-</span>patients_urso_CIF <span class="sc">%&gt;%</span> </span>
+<span id="cb42-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality=</span><span class="fu">ifelse</span>(death<span class="sc">==</span>F <span class="sc">&amp;</span> relapse<span class="sc">==</span>F <span class="sc">&amp;</span> pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>, <span class="dv">0</span>,</span>
+<span id="cb42-8"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-8" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">ifelse</span>(relapse<span class="sc">==</span>T <span class="sc">|</span> pod <span class="sc">==</span><span class="st">&quot;Y&quot;</span> <span class="sc">|</span> (cod<span class="sc">==</span><span class="st">&quot;Disease Progression&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Recurrence of primary disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Malignant disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Relapse&quot;</span>),<span class="dv">2</span>,                                  <span class="fu">ifelse</span>(cod<span class="sc">==</span><span class="st">&quot;GvHD&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;GvHD/Infection&quot;</span><span class="sc">|</span>(gvhd<span class="sc">==</span>T <span class="sc">&amp;</span> death<span class="sc">==</span>T),<span class="dv">1</span>,<span class="dv">3</span>)))) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-9"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(GRM_mortality),<span class="dv">3</span>,GRM_mortality)) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-10"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality =</span> <span class="fu">factor</span>(GRM_mortality,<span class="at">levels=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>, <span class="st">&quot;GRM&quot;</span>, <span class="st">&quot;Relapse/PoD&quot;</span>,<span class="st">&quot;Other&quot;</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-11"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality=</span><span class="fu">ifelse</span>(death<span class="sc">==</span>F <span class="sc">&amp;</span> relapse<span class="sc">==</span>F <span class="sc">&amp;</span> pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>, <span class="dv">0</span>,</span>
+<span id="cb42-12"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-12" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">ifelse</span>(relapse<span class="sc">==</span>T <span class="sc">|</span> pod <span class="sc">==</span><span class="st">&quot;Y&quot;</span> <span class="sc">|</span> (cod<span class="sc">==</span><span class="st">&quot;Disease Progression&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Recurrence of primary disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Malignant disease&quot;</span><span class="sc">|</span>cod<span class="sc">==</span><span class="st">&quot;Relapse&quot;</span>),<span class="dv">2</span>, <span class="dv">1</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-13"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(TRM_mortality),<span class="dv">1</span>,TRM_mortality)) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-14"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRM_mortality =</span> <span class="fu">factor</span>(TRM_mortality,<span class="at">levels=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,<span class="st">&quot;TRM&quot;</span>,<span class="st">&quot;Relapse/PoD&quot;</span>)))</span>
+<span id="cb42-15"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-16"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(patients_urso_CIF2<span class="sc">$</span>GRM_mortality)</span></code></pre></div>
+<pre><code>## 
+##    Censored         GRM Relapse/PoD       Other 
+##         624         191         386         100</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-1" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time <span class="ot">&lt;-</span> patients_urso_CIF2<span class="sc">$</span>OS</span>
+<span id="cb44-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-2" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>]</span>
+<span id="cb44-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-3" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>]</span>
+<span id="cb44-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-4" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>GRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> <span class="fu">min</span>(patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>],</span>
+<span id="cb44-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-5" aria-hidden="true" tabindex="-1"></a>                                                                                            patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>])</span>
+<span id="cb44-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-7" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time <span class="ot">&lt;-</span> patients_urso_CIF2<span class="sc">$</span>OS</span>
+<span id="cb44-8"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-8" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;N&quot;</span>]</span>
+<span id="cb44-9"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-9" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>F <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>]</span>
+<span id="cb44-10"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-10" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2<span class="sc">$</span>TRM_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>] <span class="ot">=</span> <span class="fu">min</span>(patients_urso_CIF2<span class="sc">$</span>pod_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>],</span>
+<span id="cb44-11"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-11" aria-hidden="true" tabindex="-1"></a>                                                                                            patients_urso_CIF2<span class="sc">$</span>relapse_time[patients_urso_CIF2<span class="sc">$</span>relapse<span class="sc">==</span>T <span class="sc">&amp;</span> patients_urso_CIF2<span class="sc">$</span>pod<span class="sc">==</span><span class="st">&quot;Y&quot;</span>])</span>
+<span id="cb44-12"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-13" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2 <span class="ot">&lt;-</span> patients_urso_CIF2 <span class="sc">%&gt;%</span> </span>
+<span id="cb44-14"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GRM_mortality_2yr =</span> <span class="fu">ifelse</span>(GRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">1</span>,GRM_mortality), </span>
+<span id="cb44-15"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">GRM_time_2yr =</span> <span class="fu">ifelse</span>(GRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,GRM_time), </span>
+<span id="cb44-16"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_mortality_2yr =</span> <span class="fu">ifelse</span>(TRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">1</span>,TRM_mortality), </span>
+<span id="cb44-17"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_time_2yr =</span> <span class="fu">ifelse</span>(TRM_time <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,TRM_time), </span>
+<span id="cb44-18"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">death_2yr =</span> <span class="fu">ifelse</span>(OS <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="cn">FALSE</span>,death), </span>
+<span id="cb44-19"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">OS_2yr =</span> <span class="fu">ifelse</span>(OS <span class="sc">&gt;</span> <span class="dv">24</span>,<span class="dv">24</span>,OS),</span>
+<span id="cb44-20"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">GRM_mortality_2yr =</span> <span class="fu">factor</span>(GRM_mortality_2yr,<span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,<span class="st">&quot;GRM&quot;</span>,<span class="st">&quot;Relapse/PoD&quot;</span>,  <span class="st">&quot;Other&quot;</span>)),  </span>
+<span id="cb44-21"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">TRM_mortality_2yr =</span> <span class="fu">factor</span>(TRM_mortality_2yr,<span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Censored&quot;</span>,  <span class="st">&quot;TRM&quot;</span>, <span class="st">&quot;Relapse/PoD&quot;</span>)))</span>
+<span id="cb44-22"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-23"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb44-23" aria-hidden="true" tabindex="-1"></a>patients_urso_CIF2 <span class="ot">&lt;-</span> patients_urso_CIF2 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">donor_new=</span><span class="fu">ifelse</span>(donor_match<span class="sc">==</span><span class="st">&quot;MMRD&quot;</span>, <span class="st">&quot;haplo&quot;</span>, donor_match))</span></code></pre></div>
+</div>
+<div id="evaluate-ursodiol-exposure-and-overall-survival" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Evaluate ursodiol exposure and overall survival<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluate-ursodiol-exposure-and-overall-survival" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="univariable-analysis" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Univariable analysis<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#univariable-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-1" aria-hidden="true" tabindex="-1"></a>KM.OS <span class="ot">&lt;-</span> <span class="fu">survfit2</span>(<span class="fu">Surv</span>(OS_2yr,<span class="fu">as.numeric</span>(death_2yr))<span class="sc">~</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
+<span id="cb45-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-2" aria-hidden="true" tabindex="-1"></a>KM.OS <span class="sc">%&gt;%</span> <span class="fu">ggsurvfit</span>() <span class="sc">+</span></span>
+<span id="cb45-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_censor_mark</span>() <span class="sc">+</span></span>
+<span id="cb45-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_confidence_interval</span>() <span class="sc">+</span></span>
+<span id="cb45-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>(<span class="at">times=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">24</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+</div>
+<div id="multivariable-analysis" class="section level3 hasAnchor" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> Multivariable analysis<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb46-1" aria-hidden="true" tabindex="-1"></a>coxfit <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">coxph</span>(<span class="fu">Surv</span>(OS_2yr,<span class="fu">as.numeric</span>(death_2yr))<span class="sc">~</span>age<span class="sc">+</span>sex<span class="sc">+</span>donor_match<span class="sc">+</span>graft<span class="sc">+</span>intensity<span class="sc">+</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
+<span id="cb46-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb46-2" aria-hidden="true" tabindex="-1"></a>coxfit <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>(<span class="at">exponentiate=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">bold_p</span>()</span></code></pre></div>
+<div id="jpviwpltzn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jpviwpltzn table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#jpviwpltzn thead, #jpviwpltzn tbody, #jpviwpltzn tfoot, #jpviwpltzn tr, #jpviwpltzn td, #jpviwpltzn th {
+  border-style: none;
+}
+
+#jpviwpltzn p {
+  margin: 0;
+  padding: 0;
+}
+
+#jpviwpltzn .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#jpviwpltzn .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#jpviwpltzn .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#jpviwpltzn .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#jpviwpltzn .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#jpviwpltzn .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#jpviwpltzn .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#jpviwpltzn .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#jpviwpltzn .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#jpviwpltzn .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#jpviwpltzn .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#jpviwpltzn .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#jpviwpltzn .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#jpviwpltzn .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#jpviwpltzn .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jpviwpltzn .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#jpviwpltzn .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#jpviwpltzn .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#jpviwpltzn .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jpviwpltzn .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#jpviwpltzn .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jpviwpltzn .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#jpviwpltzn .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jpviwpltzn .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jpviwpltzn .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jpviwpltzn .gt_left {
+  text-align: left;
+}
+
+#jpviwpltzn .gt_center {
+  text-align: center;
+}
+
+#jpviwpltzn .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#jpviwpltzn .gt_font_normal {
+  font-weight: normal;
+}
+
+#jpviwpltzn .gt_font_bold {
+  font-weight: bold;
+}
+
+#jpviwpltzn .gt_font_italic {
+  font-style: italic;
+}
+
+#jpviwpltzn .gt_super {
+  font-size: 65%;
+}
+
+#jpviwpltzn .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#jpviwpltzn .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#jpviwpltzn .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#jpviwpltzn .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#jpviwpltzn .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#jpviwpltzn .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#jpviwpltzn .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;HR&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>HR</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;95% CI&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>95% CI</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;p-value&lt;/strong&gt;"><strong>p-value</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">age</td>
+<td headers="estimate" class="gt_row gt_center">1.03</td>
+<td headers="ci" class="gt_row gt_center">1.02, 1.04</td>
+<td headers="p.value" class="gt_row gt_center" style="font-weight: bold;"><0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">sex</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    F</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    M</td>
+<td headers="estimate" class="gt_row gt_center">0.95</td>
+<td headers="ci" class="gt_row gt_center">0.79, 1.15</td>
+<td headers="p.value" class="gt_row gt_center">0.6</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">donor_match</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    haplo</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    haplo/MMUD</td>
+<td headers="estimate" class="gt_row gt_center">1.20</td>
+<td headers="ci" class="gt_row gt_center">0.57, 2.51</td>
+<td headers="p.value" class="gt_row gt_center">0.6</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    MMRD</td>
+<td headers="estimate" class="gt_row gt_center">1.23</td>
+<td headers="ci" class="gt_row gt_center">0.16, 9.28</td>
+<td headers="p.value" class="gt_row gt_center">0.8</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    MMUD</td>
+<td headers="estimate" class="gt_row gt_center">1.23</td>
+<td headers="ci" class="gt_row gt_center">0.73, 2.07</td>
+<td headers="p.value" class="gt_row gt_center">0.4</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    MRD</td>
+<td headers="estimate" class="gt_row gt_center">0.74</td>
+<td headers="ci" class="gt_row gt_center">0.45, 1.21</td>
+<td headers="p.value" class="gt_row gt_center">0.2</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    MUD</td>
+<td headers="estimate" class="gt_row gt_center">0.82</td>
+<td headers="ci" class="gt_row gt_center">0.51, 1.32</td>
+<td headers="p.value" class="gt_row gt_center">0.4</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">graft</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    BM</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    CD34</td>
+<td headers="estimate" class="gt_row gt_center">0.89</td>
+<td headers="ci" class="gt_row gt_center">0.60, 1.33</td>
+<td headers="p.value" class="gt_row gt_center">0.6</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    PBSC</td>
+<td headers="estimate" class="gt_row gt_center">1.15</td>
+<td headers="ci" class="gt_row gt_center">0.80, 1.67</td>
+<td headers="p.value" class="gt_row gt_center">0.5</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    UCB</td>
+<td headers="estimate" class="gt_row gt_center">0.75</td>
+<td headers="ci" class="gt_row gt_center">0.44, 1.28</td>
+<td headers="p.value" class="gt_row gt_center">0.3</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">intensity</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Ablative</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Nonablative</td>
+<td headers="estimate" class="gt_row gt_center">0.49</td>
+<td headers="ci" class="gt_row gt_center">0.33, 0.73</td>
+<td headers="p.value" class="gt_row gt_center" style="font-weight: bold;"><0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Reduced Intensity</td>
+<td headers="estimate" class="gt_row gt_center">1.00</td>
+<td headers="ci" class="gt_row gt_center">0.74, 1.35</td>
+<td headers="p.value" class="gt_row gt_center">>0.9</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">ursodiol2</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    N</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Y</td>
+<td headers="estimate" class="gt_row gt_center">0.69</td>
+<td headers="ci" class="gt_row gt_center">0.55, 0.85</td>
+<td headers="p.value" class="gt_row gt_center" style="font-weight: bold;"><0.001</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="4"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> HR = Hazard Ratio, CI = Confidence Interval</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+<div id="evaluation-of-cumulative-incidences" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Evaluation of cumulative incidences<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluation-of-cumulative-incidences" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="cumulative-incidence-of-gvhd-related-mortality" class="section level3 hasAnchor" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> Cumulative incidence of GVHD-related mortality<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-gvhd-related-mortality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="ot">&lt;-</span> <span class="fu">cuminc</span>(<span class="fu">Surv</span>(GRM_time_2yr, GRM_mortality_2yr)<span class="sc">~</span>ursodiol2, <span class="at">data=</span>patients_urso_CIF2)</span>
+<span id="cb47-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-3" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;GRM&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb47-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb47-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: GRM&quot;</span>)</span></code></pre></div>
+<div id="uwolvayijk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#uwolvayijk table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#uwolvayijk thead, #uwolvayijk tbody, #uwolvayijk tfoot, #uwolvayijk tr, #uwolvayijk td, #uwolvayijk th {
+  border-style: none;
+}
+
+#uwolvayijk p {
+  margin: 0;
+  padding: 0;
+}
+
+#uwolvayijk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#uwolvayijk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#uwolvayijk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#uwolvayijk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#uwolvayijk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#uwolvayijk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#uwolvayijk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#uwolvayijk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#uwolvayijk .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#uwolvayijk .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#uwolvayijk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#uwolvayijk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#uwolvayijk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#uwolvayijk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#uwolvayijk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwolvayijk .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#uwolvayijk .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#uwolvayijk .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#uwolvayijk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwolvayijk .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#uwolvayijk .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwolvayijk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#uwolvayijk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwolvayijk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#uwolvayijk .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwolvayijk .gt_left {
+  text-align: left;
+}
+
+#uwolvayijk .gt_center {
+  text-align: center;
+}
+
+#uwolvayijk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#uwolvayijk .gt_font_normal {
+  font-weight: normal;
+}
+
+#uwolvayijk .gt_font_bold {
+  font-weight: bold;
+}
+
+#uwolvayijk .gt_font_italic {
+  font-style: italic;
+}
+
+#uwolvayijk .gt_super {
+  font-size: 65%;
+}
+
+#uwolvayijk .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#uwolvayijk .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#uwolvayijk .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#uwolvayijk .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#uwolvayijk .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#uwolvayijk .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#uwolvayijk .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption><span id="tab:unnamed-chunk-43">Table 8.1: </span>Outcome: GRM</caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;N&lt;/strong&gt;"><strong>N</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 6&lt;/strong&gt;"><strong>Time 6</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 12&lt;/strong&gt;"><strong>Time 12</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 18&lt;/strong&gt;"><strong>Time 18</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 24&lt;/strong&gt;"><strong>Time 24</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;p-value&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>p-value</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">ursodiol2</td>
+<td headers="stat_n" class="gt_row gt_center">1,301</td>
+<td headers="stat_1" class="gt_row gt_center"></td>
+<td headers="stat_2" class="gt_row gt_center"></td>
+<td headers="stat_3" class="gt_row gt_center"></td>
+<td headers="stat_4" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center">0.044</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    N</td>
+<td headers="stat_n" class="gt_row gt_center"></td>
+<td headers="stat_1" class="gt_row gt_center">7.2% (4.7%, 10%)</td>
+<td headers="stat_2" class="gt_row gt_center">11% (7.8%, 15%)</td>
+<td headers="stat_3" class="gt_row gt_center">14% (10%, 18%)</td>
+<td headers="stat_4" class="gt_row gt_center">16% (12%, 20%)</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Y</td>
+<td headers="stat_n" class="gt_row gt_center"></td>
+<td headers="stat_1" class="gt_row gt_center">3.8% (2.7%, 5.1%)</td>
+<td headers="stat_2" class="gt_row gt_center">8.1% (6.5%, 9.9%)</td>
+<td headers="stat_3" class="gt_row gt_center">10% (8.2%, 12%)</td>
+<td headers="stat_4" class="gt_row gt_center">12% (9.8%, 14%)</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="7"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> Gray’s Test</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">ggcuminc</span>(<span class="at">outcome=</span><span class="st">&quot;GRM&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb48-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb48-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Months after HCT&quot;</span>,</span>
+<span id="cb48-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Cumulative Incidence (GRM)&quot;</span></span>
+<span id="cb48-5"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb48-6"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_confidence_interval</span>() <span class="sc">+</span></span>
+<span id="cb48-7"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>(<span class="at">times=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+</div>
+<div id="cumulative-incidence-of-relapseprogression-of-disease" class="section level3 hasAnchor" number="8.3.2">
+<h3><span class="header-section-number">8.3.2</span> Cumulative incidence of Relapse/progression of disease<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-relapseprogression-of-disease" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb49-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;Relapse/PoD&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb49-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb49-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: Relapse/PoD&quot;</span>)</span></code></pre></div>
+<div id="upzhjkufam" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#upzhjkufam table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#upzhjkufam thead, #upzhjkufam tbody, #upzhjkufam tfoot, #upzhjkufam tr, #upzhjkufam td, #upzhjkufam th {
+  border-style: none;
+}
+
+#upzhjkufam p {
+  margin: 0;
+  padding: 0;
+}
+
+#upzhjkufam .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#upzhjkufam .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#upzhjkufam .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#upzhjkufam .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#upzhjkufam .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#upzhjkufam .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#upzhjkufam .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#upzhjkufam .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#upzhjkufam .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#upzhjkufam .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#upzhjkufam .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#upzhjkufam .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#upzhjkufam .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#upzhjkufam .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#upzhjkufam .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#upzhjkufam .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#upzhjkufam .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#upzhjkufam .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#upzhjkufam .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#upzhjkufam .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#upzhjkufam .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#upzhjkufam .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#upzhjkufam .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#upzhjkufam .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#upzhjkufam .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#upzhjkufam .gt_left {
+  text-align: left;
+}
+
+#upzhjkufam .gt_center {
+  text-align: center;
+}
+
+#upzhjkufam .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#upzhjkufam .gt_font_normal {
+  font-weight: normal;
+}
+
+#upzhjkufam .gt_font_bold {
+  font-weight: bold;
+}
+
+#upzhjkufam .gt_font_italic {
+  font-style: italic;
+}
+
+#upzhjkufam .gt_super {
+  font-size: 65%;
+}
+
+#upzhjkufam .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#upzhjkufam .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#upzhjkufam .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#upzhjkufam .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#upzhjkufam .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#upzhjkufam .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#upzhjkufam .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption><span id="tab:unnamed-chunk-45">Table 8.2: </span>Outcome: Relapse/PoD</caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;N&lt;/strong&gt;"><strong>N</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 6&lt;/strong&gt;"><strong>Time 6</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 12&lt;/strong&gt;"><strong>Time 12</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 18&lt;/strong&gt;"><strong>Time 18</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 24&lt;/strong&gt;"><strong>Time 24</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;p-value&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>p-value</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">ursodiol2</td>
+<td headers="stat_n" class="gt_row gt_center">1,301</td>
+<td headers="stat_1" class="gt_row gt_center"></td>
+<td headers="stat_2" class="gt_row gt_center"></td>
+<td headers="stat_3" class="gt_row gt_center"></td>
+<td headers="stat_4" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center">0.088</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    N</td>
+<td headers="stat_n" class="gt_row gt_center"></td>
+<td headers="stat_1" class="gt_row gt_center">12% (8.9%, 16%)</td>
+<td headers="stat_2" class="gt_row gt_center">18% (14%, 23%)</td>
+<td headers="stat_3" class="gt_row gt_center">22% (17%, 26%)</td>
+<td headers="stat_4" class="gt_row gt_center">23% (18%, 28%)</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Y</td>
+<td headers="stat_n" class="gt_row gt_center"></td>
+<td headers="stat_1" class="gt_row gt_center">15% (13%, 17%)</td>
+<td headers="stat_2" class="gt_row gt_center">24% (21%, 26%)</td>
+<td headers="stat_3" class="gt_row gt_center">26% (24%, 29%)</td>
+<td headers="stat_4" class="gt_row gt_center">28% (25%, 31%)</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="7"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> Gray’s Test</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+<div id="cumulative-incidence-of-mortality-non-related-to-gvhd-or-relapseprogression-of-disease" class="section level3 hasAnchor" number="8.3.3">
+<h3><span class="header-section-number">8.3.3</span> Cumulative incidence of mortality non-related to GVHD or relapse/progression of disease<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-mortality-non-related-to-gvhd-or-relapseprogression-of-disease" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb50-1" aria-hidden="true" tabindex="-1"></a>gray.test.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_cuminc</span>(<span class="at">times=</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">18</span>,<span class="dv">24</span>),<span class="at">outcome=</span><span class="st">&quot;Other&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb50-3"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb50-4"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_caption</span>(<span class="st">&quot;Outcome: Other&quot;</span>)</span></code></pre></div>
+<div id="jxphmmokhs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jxphmmokhs table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#jxphmmokhs thead, #jxphmmokhs tbody, #jxphmmokhs tfoot, #jxphmmokhs tr, #jxphmmokhs td, #jxphmmokhs th {
+  border-style: none;
+}
+
+#jxphmmokhs p {
+  margin: 0;
+  padding: 0;
+}
+
+#jxphmmokhs .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#jxphmmokhs .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#jxphmmokhs .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#jxphmmokhs .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#jxphmmokhs .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#jxphmmokhs .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#jxphmmokhs .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#jxphmmokhs .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#jxphmmokhs .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#jxphmmokhs .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#jxphmmokhs .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#jxphmmokhs .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#jxphmmokhs .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#jxphmmokhs .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#jxphmmokhs .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jxphmmokhs .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#jxphmmokhs .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#jxphmmokhs .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#jxphmmokhs .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jxphmmokhs .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#jxphmmokhs .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jxphmmokhs .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#jxphmmokhs .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jxphmmokhs .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jxphmmokhs .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jxphmmokhs .gt_left {
+  text-align: left;
+}
+
+#jxphmmokhs .gt_center {
+  text-align: center;
+}
+
+#jxphmmokhs .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#jxphmmokhs .gt_font_normal {
+  font-weight: normal;
+}
+
+#jxphmmokhs .gt_font_bold {
+  font-weight: bold;
+}
+
+#jxphmmokhs .gt_font_italic {
+  font-style: italic;
+}
+
+#jxphmmokhs .gt_super {
+  font-size: 65%;
+}
+
+#jxphmmokhs .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#jxphmmokhs .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#jxphmmokhs .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#jxphmmokhs .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#jxphmmokhs .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#jxphmmokhs .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#jxphmmokhs .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption><span id="tab:unnamed-chunk-46">Table 8.3: </span>Outcome: Other</caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;N&lt;/strong&gt;"><strong>N</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 6&lt;/strong&gt;"><strong>Time 6</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 12&lt;/strong&gt;"><strong>Time 12</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 18&lt;/strong&gt;"><strong>Time 18</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Time 24&lt;/strong&gt;"><strong>Time 24</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;p-value&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>p-value</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">ursodiol2</td>
+<td headers="stat_n" class="gt_row gt_center">1,301</td>
+<td headers="stat_1" class="gt_row gt_center"></td>
+<td headers="stat_2" class="gt_row gt_center"></td>
+<td headers="stat_3" class="gt_row gt_center"></td>
+<td headers="stat_4" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center">0.003</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    N</td>
+<td headers="stat_n" class="gt_row gt_center"></td>
+<td headers="stat_1" class="gt_row gt_center">4.7% (2.7%, 7.4%)</td>
+<td headers="stat_2" class="gt_row gt_center">7.2% (4.7%, 10%)</td>
+<td headers="stat_3" class="gt_row gt_center">8.8% (6.0%, 12%)</td>
+<td headers="stat_4" class="gt_row gt_center">11% (7.6%, 14%)</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Y</td>
+<td headers="stat_n" class="gt_row gt_center"></td>
+<td headers="stat_1" class="gt_row gt_center">4.1% (3.0%, 5.4%)</td>
+<td headers="stat_2" class="gt_row gt_center">5.0% (3.8%, 6.5%)</td>
+<td headers="stat_3" class="gt_row gt_center">5.4% (4.1%, 7.0%)</td>
+<td headers="stat_4" class="gt_row gt_center">5.6% (4.3%, 7.2%)</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="7"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> Gray’s Test</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+<div id="multivariable-analysis-of-gvhd-related-mortality" class="section level3 hasAnchor" number="8.3.4">
+<h3><span class="header-section-number">8.3.4</span> Multivariable analysis of GVHD-related mortality<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis-of-gvhd-related-mortality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb51-1" aria-hidden="true" tabindex="-1"></a>fgmodel.GRM <span class="ot">&lt;-</span> <span class="fu">crr</span>(<span class="fu">Surv</span>(GRM_time_2yr,GRM_mortality_2yr)<span class="sc">~</span>age<span class="sc">+</span>sex<span class="sc">+</span>donor_match<span class="sc">+</span>graft<span class="sc">+</span>intensity<span class="sc">+</span>ursodiol2,<span class="at">data=</span>patients_urso_CIF2)</span>
+<span id="cb51-2"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cb51-2" aria-hidden="true" tabindex="-1"></a>fgmodel.GRM <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>(<span class="at">exponentiate=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">bold_p</span>()</span></code></pre></div>
+<div id="xyalqbgvhf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xyalqbgvhf table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#xyalqbgvhf thead, #xyalqbgvhf tbody, #xyalqbgvhf tfoot, #xyalqbgvhf tr, #xyalqbgvhf td, #xyalqbgvhf th {
+  border-style: none;
+}
+
+#xyalqbgvhf p {
+  margin: 0;
+  padding: 0;
+}
+
+#xyalqbgvhf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#xyalqbgvhf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#xyalqbgvhf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#xyalqbgvhf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#xyalqbgvhf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#xyalqbgvhf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#xyalqbgvhf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#xyalqbgvhf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#xyalqbgvhf .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#xyalqbgvhf .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#xyalqbgvhf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xyalqbgvhf .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#xyalqbgvhf .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#xyalqbgvhf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#xyalqbgvhf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xyalqbgvhf .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#xyalqbgvhf .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#xyalqbgvhf .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#xyalqbgvhf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xyalqbgvhf .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#xyalqbgvhf .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xyalqbgvhf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#xyalqbgvhf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xyalqbgvhf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xyalqbgvhf .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xyalqbgvhf .gt_left {
+  text-align: left;
+}
+
+#xyalqbgvhf .gt_center {
+  text-align: center;
+}
+
+#xyalqbgvhf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#xyalqbgvhf .gt_font_normal {
+  font-weight: normal;
+}
+
+#xyalqbgvhf .gt_font_bold {
+  font-weight: bold;
+}
+
+#xyalqbgvhf .gt_font_italic {
+  font-style: italic;
+}
+
+#xyalqbgvhf .gt_super {
+  font-size: 65%;
+}
+
+#xyalqbgvhf .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#xyalqbgvhf .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#xyalqbgvhf .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#xyalqbgvhf .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#xyalqbgvhf .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#xyalqbgvhf .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#xyalqbgvhf .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;HR&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>HR</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;95% CI&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>95% CI</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;p-value&lt;/strong&gt;"><strong>p-value</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">age</td>
+<td headers="estimate" class="gt_row gt_center">1.02</td>
+<td headers="ci" class="gt_row gt_center">1.01, 1.04</td>
+<td headers="p.value" class="gt_row gt_center" style="font-weight: bold;">0.002</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">sex</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    F</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    M</td>
+<td headers="estimate" class="gt_row gt_center">0.77</td>
+<td headers="ci" class="gt_row gt_center">0.56, 1.05</td>
+<td headers="p.value" class="gt_row gt_center">0.10</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">donor_match</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    haplo</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    haplo/MMUD</td>
+<td headers="estimate" class="gt_row gt_center">1.78</td>
+<td headers="ci" class="gt_row gt_center">0.57, 5.59</td>
+<td headers="p.value" class="gt_row gt_center">0.3</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    MMRD</td>
+<td headers="estimate" class="gt_row gt_center">0.00</td>
+<td headers="ci" class="gt_row gt_center">0.00, 0.00</td>
+<td headers="p.value" class="gt_row gt_center" style="font-weight: bold;"><0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    MMUD</td>
+<td headers="estimate" class="gt_row gt_center">1.52</td>
+<td headers="ci" class="gt_row gt_center">0.65, 3.58</td>
+<td headers="p.value" class="gt_row gt_center">0.3</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    MRD</td>
+<td headers="estimate" class="gt_row gt_center">0.58</td>
+<td headers="ci" class="gt_row gt_center">0.26, 1.28</td>
+<td headers="p.value" class="gt_row gt_center">0.2</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    MUD</td>
+<td headers="estimate" class="gt_row gt_center">0.74</td>
+<td headers="ci" class="gt_row gt_center">0.35, 1.59</td>
+<td headers="p.value" class="gt_row gt_center">0.4</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">graft</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    BM</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    CD34</td>
+<td headers="estimate" class="gt_row gt_center">1.28</td>
+<td headers="ci" class="gt_row gt_center">0.59, 2.79</td>
+<td headers="p.value" class="gt_row gt_center">0.5</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    PBSC</td>
+<td headers="estimate" class="gt_row gt_center">1.64</td>
+<td headers="ci" class="gt_row gt_center">0.85, 3.16</td>
+<td headers="p.value" class="gt_row gt_center">0.14</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    UCB</td>
+<td headers="estimate" class="gt_row gt_center">0.88</td>
+<td headers="ci" class="gt_row gt_center">0.36, 2.19</td>
+<td headers="p.value" class="gt_row gt_center">0.8</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">intensity</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Ablative</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Nonablative</td>
+<td headers="estimate" class="gt_row gt_center">0.95</td>
+<td headers="ci" class="gt_row gt_center">0.53, 1.71</td>
+<td headers="p.value" class="gt_row gt_center">0.9</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Reduced Intensity</td>
+<td headers="estimate" class="gt_row gt_center">1.25</td>
+<td headers="ci" class="gt_row gt_center">0.75, 2.09</td>
+<td headers="p.value" class="gt_row gt_center">0.4</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">ursodiol2</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    N</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Y</td>
+<td headers="estimate" class="gt_row gt_center">0.66</td>
+<td headers="ci" class="gt_row gt_center">0.46, 0.94</td>
+<td headers="p.value" class="gt_row gt_center" style="font-weight: bold;">0.022</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="4"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> HR = Hazard Ratio, CI = Confidence Interval</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="diversity-bai-operon-and-domination.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/08_ursodiol_outcomes.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

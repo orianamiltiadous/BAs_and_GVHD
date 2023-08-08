@@ -1,0 +1,111 @@
+# Evaluation of UDCA exposure and clinical outcomes
+
+## Prepare the patient outcome table
+```{r, warning=F, message=F}
+library(tidycmprsk)
+library(ggsurvfit)
+library(tidycmprsk)
+library(gtsummary)
+
+patients_urso_CIF2<-patients_urso_CIF %>% 
+  mutate(GRM_mortality=ifelse(death==F & relapse==F & pod=="N", 0,
+                              ifelse(relapse==T | pod =="Y" | (cod=="Disease Progression"|cod=="Recurrence of primary disease"|cod=="Malignant disease"|cod=="Relapse"),2,                                  ifelse(cod=="GvHD"|cod=="GvHD/Infection"|(gvhd==T & death==T),1,3)))) %>% 
+  mutate(GRM_mortality = ifelse(is.na(GRM_mortality),3,GRM_mortality)) %>% 
+  mutate(GRM_mortality = factor(GRM_mortality,levels=c(0,1,2,3),labels=c("Censored", "GRM", "Relapse/PoD","Other"))) %>% 
+  mutate(TRM_mortality=ifelse(death==F & relapse==F & pod=="N", 0,
+                              ifelse(relapse==T | pod =="Y" | (cod=="Disease Progression"|cod=="Recurrence of primary disease"|cod=="Malignant disease"|cod=="Relapse"),2, 1))) %>% 
+  mutate(TRM_mortality = ifelse(is.na(TRM_mortality),1,TRM_mortality)) %>% 
+  mutate(TRM_mortality = factor(TRM_mortality,levels=c(0,1,2),labels=c("Censored","TRM","Relapse/PoD")))
+
+table(patients_urso_CIF2$GRM_mortality)
+
+
+
+patients_urso_CIF2$GRM_time <- patients_urso_CIF2$OS
+patients_urso_CIF2$GRM_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="N"] = patients_urso_CIF2$relapse_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="N"]
+patients_urso_CIF2$GRM_time[patients_urso_CIF2$relapse==F & patients_urso_CIF2$pod=="Y"] = patients_urso_CIF2$pod_time[patients_urso_CIF2$relapse==F & patients_urso_CIF2$pod=="Y"]
+patients_urso_CIF2$GRM_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="Y"] = min(patients_urso_CIF2$pod_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="Y"],
+                                                                                            patients_urso_CIF2$relapse_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="Y"])
+
+patients_urso_CIF2$TRM_time <- patients_urso_CIF2$OS
+patients_urso_CIF2$TRM_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="N"] = patients_urso_CIF2$relapse_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="N"]
+patients_urso_CIF2$TRM_time[patients_urso_CIF2$relapse==F & patients_urso_CIF2$pod=="Y"] = patients_urso_CIF2$pod_time[patients_urso_CIF2$relapse==F & patients_urso_CIF2$pod=="Y"]
+patients_urso_CIF2$TRM_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="Y"] = min(patients_urso_CIF2$pod_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="Y"],
+                                                                                            patients_urso_CIF2$relapse_time[patients_urso_CIF2$relapse==T & patients_urso_CIF2$pod=="Y"])
+
+patients_urso_CIF2 <- patients_urso_CIF2 %>% 
+  mutate(GRM_mortality_2yr = ifelse(GRM_time > 24,1,GRM_mortality), 
+         GRM_time_2yr = ifelse(GRM_time > 24,24,GRM_time), 
+         TRM_mortality_2yr = ifelse(TRM_time > 24,1,TRM_mortality), 
+         TRM_time_2yr = ifelse(TRM_time > 24,24,TRM_time), 
+         death_2yr = ifelse(OS > 24,FALSE,death), 
+         OS_2yr = ifelse(OS > 24,24,OS),
+         GRM_mortality_2yr = factor(GRM_mortality_2yr,levels=1:4,labels=c("Censored","GRM","Relapse/PoD",  "Other")),  
+         TRM_mortality_2yr = factor(TRM_mortality_2yr,levels=1:3,labels=c("Censored",  "TRM", "Relapse/PoD")))
+
+patients_urso_CIF2 <- patients_urso_CIF2 %>% mutate(donor_new=ifelse(donor_match=="MMRD", "haplo", donor_match))
+
+```
+
+## Evaluate ursodiol exposure and overall survival
+
+### Univariable analysis
+```{r, warning=F, message=F}
+KM.OS <- survfit2(Surv(OS_2yr,as.numeric(death_2yr))~ursodiol2,data=patients_urso_CIF2)
+KM.OS %>% ggsurvfit() +
+  add_censor_mark() +
+  add_confidence_interval() +
+  add_risktable(times=c(0,6, 12, 18, 24))
+```
+
+### Multivariable analysis
+```{r, warning=F, message=F}
+coxfit <- survival::coxph(Surv(OS_2yr,as.numeric(death_2yr))~age+sex+donor_match+graft+intensity+ursodiol2,data=patients_urso_CIF2)
+coxfit %>% tbl_regression(exponentiate=TRUE) %>% bold_p()
+```
+
+## Evaluation of cumulative incidences
+
+### Cumulative incidence of GVHD-related mortality
+```{r, warning=F, message=F}
+gray.test.GRM <- cuminc(Surv(GRM_time_2yr, GRM_mortality_2yr)~ursodiol2, data=patients_urso_CIF2)
+
+gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="GRM") %>% 
+  add_p() %>% 
+  add_n() %>% 
+  modify_caption("Outcome: GRM")
+```
+
+
+```{r, warning=F, message=F}
+gray.test.GRM %>% ggcuminc(outcome="GRM") + 
+  labs(
+    x = "Months after HCT",
+    y = "Cumulative Incidence (GRM)"
+  ) + 
+  add_confidence_interval() +
+  add_risktable(times=c(0,6,12,18,24))
+```
+
+### Cumulative incidence of Relapse/progression of disease
+```{r, warning=F, message=F}
+gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="Relapse/PoD") %>% 
+  add_p() %>% 
+  add_n() %>% 
+  modify_caption("Outcome: Relapse/PoD")
+```
+
+### Cumulative incidence of mortality non-related to GVHD or relapse/progression of disease
+```{r,warning=F, message=F}
+gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="Other") %>% 
+  add_p() %>% 
+  add_n() %>% 
+  modify_caption("Outcome: Other")
+```
+
+### Multivariable analysis of GVHD-related mortality
+```{r, warning=F, message=F}
+fgmodel.GRM <- crr(Surv(GRM_time_2yr,GRM_mortality_2yr)~age+sex+donor_match+graft+intensity+ursodiol2,data=patients_urso_CIF2)
+fgmodel.GRM %>% tbl_regression(exponentiate=TRUE) %>% bold_p()
+```
+

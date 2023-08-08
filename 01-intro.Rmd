@@ -1,0 +1,39 @@
+# Introduction: load the datasets
+
+## Load packages
+```{r, warning=F, message=F}
+library(janitor)
+library(readxl)
+library(tidyverse)
+library(ggpubr)
+library(data.table)
+```
+
+## Load datasets
+```{r, warning=F, message=F}
+#patient cohort
+cohort_BAS<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/cohort_BAS.csv")
+ursodiol<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/ursodiol.csv")
+
+#metabolomics data
+#concentrations
+conc_all_filtered<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/conc_all_filtered.csv")
+filtered_combined_table<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/filtered_combined_table.csv")
+#annotations
+ba_families<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/ba_families.csv")
+
+#16s data
+counts_samples <-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/counts_samples.csv")
+asv_annotation_blast_ag<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/asv_annotation_blast_ag.csv")
+asv_alpha_all<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/asv_alpha_all.csv")
+asv_annotation_blast_color_ag<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/asv_annotation_blast_color_ag.csv")
+
+#shotgun data
+BSH_metalphlan <-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/BSH_metalphlan.csv")
+bai_genes_clean<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/bai_genes_clean.csv")
+taxa_bas_later<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/taxa_bas_later.csv")
+
+#ursodiol cohort: double check that it's ok to share
+patients_urso_CIF<- read_csv( "/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/patients_urso_CIF.csv")
+```
+

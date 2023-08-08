@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Create landscape of all peri-GVHD-onset samples (figure 5) | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</title>
+  <meta name="description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Create landscape of all peri-GVHD-onset samples (figure 5) | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Create landscape of all peri-GVHD-onset samples (figure 5) | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
+  
+  <meta name="twitter:description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  
+
+<meta name="author" content="Oriana Miltiadous" />
+
+
+<meta name="date" content="2023-08-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"/>
+<link rel="next" href="diversity-bai-operon-and-domination.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html"><i class="fa fa-check"></i><b>1</b> Introduction: load the datasets</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html#load-packages"><i class="fa fa-check"></i><b>1.1</b> Load packages</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html#load-datasets"><i class="fa fa-check"></i><b>1.2</b> Load datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><i class="fa fa-check"></i><b>2</b> Analyze the effect of UDCA administration on the bile acid pool (supplementary figure 5)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#plot-ursodiol-exposure-and-secondary-bas-concentrations"><i class="fa fa-check"></i><b>2.1</b> Plot ursodiol exposure and secondary BAs concentrations</a></li>
+<li class="chapter" data-level="2.2" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#plot-correlation-of-ursodiol-with-other-bile-acid-pools-plot-conjugated-udca-tauroursodeoxycholic_acidglycoursodeoxycholic_acid-tbas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-total-bas-total_nonudca_pool-nonudca-sbas-secondary_nonudca-secondaryprimary-ratio-sp_ratio"><i class="fa fa-check"></i><b>2.2</b> Plot correlation of ursodiol with other bile acid pools: plot conjugated UDCA (tauroursodeoxycholic_acid+glycoursodeoxycholic_acid), TBAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA total BAs (total_nonUDCA_pool), nonUDCA SBAs (secondary_nonUDCA), secondary/primary ratio (SP_ratio)</a></li>
+<li class="chapter" data-level="2.3" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#create-correlation-plots-to-evaluate-association-of-udca-with-all-individual-bas"><i class="fa fa-check"></i><b>2.3</b> Create correlation plots to evaluate association of UDCA with all individual BAs</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#visualization-of-significant-correlations-of-udca-with-individual-bas-r0.4"><i class="fa fa-check"></i><b>2.3.1</b> Visualization of significant correlations of UDCA with individual BAs (R&gt;0.4)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><i class="fa fa-check"></i><b>3</b> Create the bile acid pools (figure 4, supplementary figure 6,8)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-ba-pools-first-for-peri-gvhd-onset-timepoint"><i class="fa fa-check"></i><b>3.1</b> Create BA pools first for peri-GVHD-onset timepoint</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#plot-tbas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-sbas-secondary_nonudca-conjugated-conjugated_pool-unconjugated-unconjugated_pool-sulfated-sulfated_pool"><i class="fa fa-check"></i><b>3.1.1</b> Plot: TBAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA SBAs (secondary_nonUDCA), conjugated (conjugated_pool), unconjugated (unconjugated_pool), sulfated (sulfated_pool)</a></li>
+<li class="chapter" data-level="3.1.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-pies"><i class="fa fa-check"></i><b>3.1.2</b> Create pies</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-ba-pools-for-peri-engraftment-timepoint"><i class="fa fa-check"></i><b>3.2</b> Create BA pools for peri-engraftment timepoint</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#plot-ba-pools-and-gvhd-can-plot-total-bas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-sbas-secondary_nonudca-conjugated-conjugated_pool-unconjugated-unconjugated_pool-sulfated_pool-secondaryprimary-ratio-and-secondaryprimary-ratio"><i class="fa fa-check"></i><b>3.2.1</b> Plot BA pools and GVHD; can plot total BAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA SBAs (secondary_nonUDCA), conjugated (conjugated_pool), unconjugated (unconjugated_pool), sulfated_pool, secondary/primary ratio and secondary*/primary ratio</a></li>
+<li class="chapter" data-level="3.2.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-pies-1"><i class="fa fa-check"></i><b>3.2.2</b> Create pies</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><i class="fa fa-check"></i><b>4</b> Evaluate T cell modulatory BAs in patients with GVHD vs controls (figure 4)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#oxolca"><i class="fa fa-check"></i><b>4.1</b> 3oxoLCA</a></li>
+<li class="chapter" data-level="4.2" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#isolca"><i class="fa fa-check"></i><b>4.2</b> isoLCA</a></li>
+<li class="chapter" data-level="4.3" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#isodca"><i class="fa fa-check"></i><b>4.3</b> isoDCA</a></li>
+<li class="chapter" data-level="4.4" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#omca"><i class="fa fa-check"></i><b>4.4</b> OMCA</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><i class="fa fa-check"></i><b>5</b> Shotgun metagenomic sequencing: Evaluate genes of interest (figure 5, supplement figure 10)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bsh"><i class="fa fa-check"></i><b>5.1</b> BSH</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-bsh-abundance-at-peri-gvhd-onset"><i class="fa fa-check"></i><b>5.1.1</b> Evaluate BSH abundance at peri-GVHD onset</a></li>
+<li class="chapter" data-level="5.1.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-bsh-abundance-at-peri-engraftment-time-point"><i class="fa fa-check"></i><b>5.1.2</b> Evaluate BSH abundance at peri-engraftment time point</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-gene"><i class="fa fa-check"></i><b>5.2</b> Bai operon gene</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-correlation-of-bai-operon-gene-sum-and-nonudca-secondary-bas"><i class="fa fa-check"></i><b>5.2.1</b> Evaluate correlation of bai operon gene sum and nonUDCA secondary BAs</a></li>
+<li class="chapter" data-level="5.2.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-gene-sum-in-peri-gvhd-onset"><i class="fa fa-check"></i><b>5.2.2</b> Bai operon gene sum in peri-GVHD onset</a></li>
+<li class="chapter" data-level="5.2.3" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-individual-gene-abundance"><i class="fa fa-check"></i><b>5.2.3</b> Bai operon individual gene abundance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bile-acid-related-bacteria"><i class="fa fa-check"></i><b>5.3</b> Bile acid related bacteria</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#eggerthella-lenta"><i class="fa fa-check"></i><b>5.3.1</b> Eggerthella lenta</a></li>
+<li class="chapter" data-level="5.3.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#ruminococcus-gnavus"><i class="fa fa-check"></i><b>5.3.2</b> Ruminococcus gnavus</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><i class="fa fa-check"></i><b>6</b> Create landscape of all peri-GVHD-onset samples (figure 5)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#define-sample-order-from-higher-nonudca-secondary-bas-to-lower"><i class="fa fa-check"></i><b>6.1</b> Define sample order from higher nonUDCA secondary BAs to lower</a></li>
+<li class="chapter" data-level="6.2" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#gi-gvhd-plot"><i class="fa fa-check"></i><b>6.2</b> GI GVHD plot</a></li>
+<li class="chapter" data-level="6.3" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#sba-plot"><i class="fa fa-check"></i><b>6.3</b> SBA plot</a></li>
+<li class="chapter" data-level="6.4" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#a-diversity-plot"><i class="fa fa-check"></i><b>6.4</b> A-diversity plot</a></li>
+<li class="chapter" data-level="6.5" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#bile-acid-related-genes"><i class="fa fa-check"></i><b>6.5</b> Bile acid related genes</a></li>
+<li class="chapter" data-level="6.6" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#microbiome-composition"><i class="fa fa-check"></i><b>6.6</b> Microbiome composition</a></li>
+<li class="chapter" data-level="6.7" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#add-all-plots-together"><i class="fa fa-check"></i><b>6.7</b> Add all plots together</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html"><i class="fa fa-check"></i><b>7</b> Diversity, bai operon and domination</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#evaluate-correlation-of-a-diversity-and-bai-operon-sum"><i class="fa fa-check"></i><b>7.1</b> Evaluate correlation of a-diversity and bai operon sum</a></li>
+<li class="chapter" data-level="7.2" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#identify-patients-with-monodomination-by-16s"><i class="fa fa-check"></i><b>7.2</b> Identify patients with monodomination by 16S</a></li>
+<li class="chapter" data-level="7.3" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#domination-and-a-diversity"><i class="fa fa-check"></i><b>7.3</b> Domination and a-diversity</a></li>
+<li class="chapter" data-level="7.4" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#domination-and-bai-operon"><i class="fa fa-check"></i><b>7.4</b> Domination and bai operon</a></li>
+<li class="chapter" data-level="7.5" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#sbas-and-domination"><i class="fa fa-check"></i><b>7.5</b> SBAs and domination</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html"><i class="fa fa-check"></i><b>8</b> Evaluation of UDCA exposure and clinical outcomes</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#prepare-the-patient-outcome-table"><i class="fa fa-check"></i><b>8.1</b> Prepare the patient outcome table</a></li>
+<li class="chapter" data-level="8.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluate-ursodiol-exposure-and-overall-survival"><i class="fa fa-check"></i><b>8.2</b> Evaluate ursodiol exposure and overall survival</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#univariable-analysis"><i class="fa fa-check"></i><b>8.2.1</b> Univariable analysis</a></li>
+<li class="chapter" data-level="8.2.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis"><i class="fa fa-check"></i><b>8.2.2</b> Multivariable analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluation-of-cumulative-incidences"><i class="fa fa-check"></i><b>8.3</b> Evaluation of cumulative incidences</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-gvhd-related-mortality"><i class="fa fa-check"></i><b>8.3.1</b> Cumulative incidence of GVHD-related mortality</a></li>
+<li class="chapter" data-level="8.3.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-relapseprogression-of-disease"><i class="fa fa-check"></i><b>8.3.2</b> Cumulative incidence of Relapse/progression of disease</a></li>
+<li class="chapter" data-level="8.3.3" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-mortality-non-related-to-gvhd-or-relapseprogression-of-disease"><i class="fa fa-check"></i><b>8.3.3</b> Cumulative incidence of mortality non-related to GVHD or relapse/progression of disease</a></li>
+<li class="chapter" data-level="8.3.4" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis-of-gvhd-related-mortality"><i class="fa fa-check"></i><b>8.3.4</b> Multivariable analysis of GVHD-related mortality</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="create-landscape-of-all-peri-gvhd-onset-samples-figure-5" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Create landscape of all peri-GVHD-onset samples (figure 5)<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#create-landscape-of-all-peri-gvhd-onset-samples-figure-5" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="define-sample-order-from-higher-nonudca-secondary-bas-to-lower" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Define sample order from higher nonUDCA secondary BAs to lower<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#define-sample-order-from-higher-nonudca-secondary-bas-to-lower" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb30-1" aria-hidden="true" tabindex="-1"></a>samples_key<span class="ot">&lt;-</span>BSH_metalphlan <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(sampleid) <span class="sc">%&gt;%</span>  </span>
+<span id="cb30-2"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(later_pools_final <span class="sc">%&gt;%</span> <span class="fu">select</span>(sampleid, secondary_nonUDCA)) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-3"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(cohort_BAS) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-4"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(later<span class="sc">==</span><span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-5"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(secondary_nonUDCA)) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-6"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ursodiol) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ursodiol2<span class="sc">==</span><span class="st">&quot;Y&quot;</span>)</span>
+<span id="cb30-7"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb30-8" aria-hidden="true" tabindex="-1"></a>level_order <span class="ot">&lt;-</span> samples_key<span class="sc">$</span>sampleid</span></code></pre></div>
+</div>
+<div id="gi-gvhd-plot" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> GI GVHD plot<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#gi-gvhd-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-1" aria-hidden="true" tabindex="-1"></a>gi_gvhd_plot<span class="ot">&lt;-</span>cohort_BAS <span class="sc">%&gt;%</span> </span>
+<span id="cb31-2"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(later<span class="sc">==</span><span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-3"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>((<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(sampleid, <span class="at">levels =</span> level_order), <span class="at">y =</span> <span class="dv">1</span>, <span class="at">fill =</span> GI_GVHD))) <span class="sc">+</span> </span>
+<span id="cb31-4"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb31-5"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x=</span><span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb31-6"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb31-7"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb31-8"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;dodgerblue4&quot;</span>))<span class="sc">+</span></span>
+<span id="cb31-9"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb31-10"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="co">#only for plotting reasons</span></span>
+<span id="cb31-11"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-12"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb31-12" aria-hidden="true" tabindex="-1"></a>gi_gvhd_plot</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="sba-plot" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> SBA plot<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#sba-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb32-1" aria-hidden="true" tabindex="-1"></a>sba_plot<span class="ot">&lt;-</span><span class="fu">ggplot</span>(samples_key, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">factor</span>(sampleid, <span class="at">level=</span>level_order), <span class="at">y=</span><span class="fu">log10</span>(secondary_nonUDCA)))<span class="sc">+</span></span>
+<span id="cb32-2"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb32-3"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;log(SBAs*)&quot;</span>)<span class="sc">+</span></span>
+<span id="cb32-4"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x=</span><span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb32-5"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>)</span>
+<span id="cb32-6"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb32-6" aria-hidden="true" tabindex="-1"></a>sba_plot</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+</div>
+<div id="a-diversity-plot" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> A-diversity plot<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#a-diversity-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-1" aria-hidden="true" tabindex="-1"></a>adiv_pre<span class="ot">&lt;-</span>cohort_BAS <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(later<span class="sc">==</span><span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(asv_alpha_all) <span class="sc">%&gt;%</span>  <span class="co">#add a-diversity</span></span>
+<span id="cb33-4"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(samples_key) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-5"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(secondary_nonUDCA)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-6"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.))</span>
+<span id="cb33-7"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-8" aria-hidden="true" tabindex="-1"></a>adiv_plot<span class="ot">&lt;-</span><span class="fu">ggplot</span>(adiv_pre, <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> simpson_reciprocal)) <span class="sc">+</span></span>
+<span id="cb33-9"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb33-10"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;loess&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-11"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb33-12"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;a-diversity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-13"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#xlab(&quot;sampleid&quot;) +</span></span>
+<span id="cb33-14"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb33-15"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-16"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> adiv_pre<span class="sc">$</span>rank[<span class="fu">order</span>(<span class="sc">-</span>adiv_pre<span class="sc">$</span>rank)])</span>
+<span id="cb33-17"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb33-18" aria-hidden="true" tabindex="-1"></a>adiv_plot</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+</div>
+<div id="bile-acid-related-genes" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Bile acid related genes<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#bile-acid-related-genes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-1" aria-hidden="true" tabindex="-1"></a>bai_genes_clean<span class="sc">$</span>sampleid <span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">&quot;FMT_&quot;</span>, <span class="st">&quot;FMT.&quot;</span>, bai_genes_clean<span class="sc">$</span>sampleid)</span>
+<span id="cb34-2"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-3" aria-hidden="true" tabindex="-1"></a>ba_genes_pre<span class="ot">&lt;-</span>samples_key <span class="sc">%&gt;%</span> </span>
+<span id="cb34-4"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sampleid, GI_GVHD, secondary_nonUDCA) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-5"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(BSH_metalphlan <span class="sc">%&gt;%</span> </span>
+<span id="cb34-6"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-6" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(sampleid, cpm, KOID)) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-7"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gene=</span>KOID) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-8"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gene=</span><span class="fu">ifelse</span>(gene<span class="sc">==</span><span class="st">&quot;K01442&quot;</span>, <span class="st">&quot;BSH&quot;</span>, <span class="cn">NA</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-9"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb34-10"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key=</span>gene, <span class="at">value=</span>cpm, <span class="at">fill=</span><span class="dv">0</span>)</span>
+<span id="cb34-11"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-12"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-12" aria-hidden="true" tabindex="-1"></a>operon_genes_pre<span class="ot">&lt;-</span>samples_key <span class="sc">%&gt;%</span></span>
+<span id="cb34-13"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(bai_genes_clean) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-14"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sampleid, cpm, gene) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-15"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb34-16"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key=</span>gene, <span class="at">value=</span>cpm, <span class="at">fill=</span><span class="dv">0</span>)</span>
+<span id="cb34-17"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-18"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-18" aria-hidden="true" tabindex="-1"></a>pre_bai_plot<span class="ot">&lt;-</span>ba_genes_pre <span class="sc">%&gt;%</span> </span>
+<span id="cb34-19"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(operon_genes_pre) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-20"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>GI_GVHD, <span class="sc">-</span>secondary_nonUDCA) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-21"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="st">&quot;gene&quot;</span>, <span class="st">&quot;cpm&quot;</span>, <span class="fu">names</span>(.)[<span class="dv">2</span>]<span class="sc">:</span><span class="fu">names</span>(.)[<span class="fu">ncol</span>(.)]) </span>
+<span id="cb34-22"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-23"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-24"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-24" aria-hidden="true" tabindex="-1"></a>bai_plot<span class="ot">&lt;-</span>pre_bai_plot <span class="sc">%&gt;%</span> </span>
+<span id="cb34-25"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">factor</span>(sampleid, <span class="at">level=</span>level_order), <span class="at">y=</span>gene, <span class="at">fill=</span><span class="fu">log10</span>(cpm<span class="fl">+0.05</span>)))<span class="sc">+</span></span>
+<span id="cb34-26"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-26" aria-hidden="true" tabindex="-1"></a>           <span class="fu">geom_tile</span>()<span class="sc">+</span></span>
+<span id="cb34-27"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-28"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;bile acid genes&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-29"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low=</span><span class="st">&quot;white&quot;</span>, <span class="at">high=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-30"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x=</span><span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb34-31"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="co">#only for plotting reasons</span></span>
+<span id="cb34-32"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb34-32" aria-hidden="true" tabindex="-1"></a>bai_plot</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</div>
+<div id="microbiome-composition" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> Microbiome composition<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#microbiome-composition" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(asv_annotation_blast_color_ag)</span>
+<span id="cb35-2"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-2" aria-hidden="true" tabindex="-1"></a>asv_color_base_set <span class="ot">=</span> <span class="fu">unique</span>(asv_annotation_blast_color_ag[,.(color_label_group,color_base)])</span>
+<span id="cb35-3"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-3" aria-hidden="true" tabindex="-1"></a>color_base_set_asv_carT <span class="ot">=</span> asv_color_base_set<span class="sc">$</span>color_base</span>
+<span id="cb35-4"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(color_base_set_asv_carT) <span class="ot">=</span>asv_color_base_set<span class="sc">$</span>color_label_group;</span>
+<span id="cb35-5"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-5" aria-hidden="true" tabindex="-1"></a>gg <span class="ot">=</span> <span class="fu">ggplot</span>(asv_color_base_set, <span class="fu">aes</span>(color_label_group,<span class="at">y=</span><span class="dv">1</span>,<span class="at">fill=</span>color_label_group)) <span class="sc">+</span> <span class="fu">geom_tile</span>()  <span class="sc">+</span></span>
+<span id="cb35-6"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> color_base_set_asv_carT) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb35-8"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb35-9"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb35-10"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-11"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="co">#color_set_asv_carT maps each distinct taxonomic group to its corresponding color.</span></span>
+<span id="cb35-12"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-12" aria-hidden="true" tabindex="-1"></a>asv_color_set <span class="ot">=</span> <span class="fu">unique</span>(asv_annotation_blast_color_ag[,.(color,color_label_group_distinct,color_label_group,color_base)])</span>
+<span id="cb35-13"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-13" aria-hidden="true" tabindex="-1"></a>color_set_asv_carT <span class="ot">=</span> asv_color_set<span class="sc">$</span>color</span>
+<span id="cb35-14"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(color_set_asv_carT) <span class="ot">=</span>asv_color_set<span class="sc">$</span>color_label_group_distinct;</span>
+<span id="cb35-15"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(counts_samples)</span>
+<span id="cb35-16"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(asv_annotation_blast_color_ag)</span>
+<span id="cb35-17"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-17" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="fu">merge</span>(counts_samples[,.(asv_key,sampleid,</span>
+<span id="cb35-18"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-18" aria-hidden="true" tabindex="-1"></a>                         count,count_relative,count_total)],</span>
+<span id="cb35-19"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-19" aria-hidden="true" tabindex="-1"></a>          asv_annotation_blast_color_ag[,.(asv_key,color_label_group_distinct)]);</span>
+<span id="cb35-20"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-21"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-21" aria-hidden="true" tabindex="-1"></a>sample_composition <span class="ot">&lt;-</span> m <span class="sc">%&gt;%</span> </span>
+<span id="cb35-22"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(cohort_BAS <span class="sc">%&gt;%</span> <span class="fu">select</span>(PID, sampleid)) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-23"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(cohort_BAS) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-24"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(later<span class="sc">==</span><span class="st">&quot;Y&quot;</span>)</span>
+<span id="cb35-25"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-26"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-27"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-27" aria-hidden="true" tabindex="-1"></a>m1<span class="ot">&lt;-</span>sample_composition <span class="sc">%&gt;%</span> </span>
+<span id="cb35-28"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sampleid, color_label_group_distinct) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-29"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(samples_key) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-30"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sampleid =</span> <span class="fu">fct_reorder</span>(sampleid, <span class="fu">desc</span>(secondary_nonUDCA))) </span>
+<span id="cb35-31"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-32"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-32" aria-hidden="true" tabindex="-1"></a>m1<span class="sc">$</span>color_label_group_distinct <span class="ot">=</span> <span class="fu">factor</span>(m1<span class="sc">$</span>color_label_group_distinct,<span class="at">levels =</span> <span class="fu">sort</span>(<span class="fu">unique</span>(m1<span class="sc">$</span>color_label_group_distinct),<span class="at">decreasing =</span> T));</span>
+<span id="cb35-33"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-33" aria-hidden="true" tabindex="-1"></a>gg_composition <span class="ot">=</span> <span class="fu">ggplot</span>(m1,</span>
+<span id="cb35-34"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-34" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">factor</span>(sampleid, <span class="at">levels=</span>level_order),</span>
+<span id="cb35-35"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-35" aria-hidden="true" tabindex="-1"></a>                            <span class="at">y=</span>count_relative,</span>
+<span id="cb35-36"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-36" aria-hidden="true" tabindex="-1"></a>                            <span class="at">fill=</span>color_label_group_distinct) ) <span class="sc">+</span></span>
+<span id="cb35-37"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>,<span class="at">position=</span><span class="st">&quot;fill&quot;</span>,<span class="at">width =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb35-38"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb35-39"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb35-40"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb35-41"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-42"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb35-43"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> color_set_asv_carT);</span>
+<span id="cb35-44"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb35-44" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(gg_composition)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+<div id="add-all-plots-together" class="section level2 hasAnchor" number="6.7">
+<h2><span class="header-section-number">6.7</span> Add all plots together<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#add-all-plots-together" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
+<span id="cb36-2"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb36-2" aria-hidden="true" tabindex="-1"></a>last<span class="ot">&lt;-</span><span class="fu">plot_grid</span>(gi_gvhd_plot, sba_plot, bai_plot, adiv_plot, gg_composition, </span>
+<span id="cb36-3"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb36-3" aria-hidden="true" tabindex="-1"></a>          <span class="co">#labels = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;),</span></span>
+<span id="cb36-4"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb36-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">5</span>,</span>
+<span id="cb36-5"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb36-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">align =</span> <span class="st">&quot;v&quot;</span>,<span class="at">axis =</span> <span class="st">&#39;l&#39;</span>,</span>
+<span id="cb36-6"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb36-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">width =</span> <span class="dv">40</span>, <span class="at">height =</span> <span class="dv">20</span>,</span>
+<span id="cb36-7"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb36-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">rel_heights =</span> <span class="fu">c</span>(<span class="fl">1.8</span>, <span class="dv">4</span> ,<span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">10</span>))</span>
+<span id="cb36-8"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#cb36-8" aria-hidden="true" tabindex="-1"></a>last</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="diversity-bai-operon-and-domination.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/06_landscape.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
