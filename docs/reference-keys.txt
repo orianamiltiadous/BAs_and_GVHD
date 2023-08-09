@@ -1,6 +1,6 @@
-tab:unnamed-chunk-43
-tab:unnamed-chunk-45
-tab:unnamed-chunk-46
+tab:08-ursodiol-outcomes-4
+tab:08-ursodiol-outcomes-6
+tab:08-ursodiol-outcomes-7
 introduction-load-the-datasets
 load-packages
 load-datasets
