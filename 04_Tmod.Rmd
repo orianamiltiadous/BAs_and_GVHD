@@ -1,7 +1,7 @@
 
 # Evaluate T cell modulatory BAs in patients with GVHD vs controls (figure 4)
 ## 3oxoLCA
-```{r, message=F, warning=F}
+```{r 04-Tmod-1, message=F, warning=F}
 filtered_combined_table %>% 
   left_join(cohort_BAS) %>% 
   filter(later=="Y") %>% 
@@ -20,7 +20,7 @@ filtered_combined_table %>%
 ```
 
 ## isoLCA
-```{r, warning=F, message=FALSE}
+```{r 04-Tmod-2, warning=F, message=FALSE}
 filtered_combined_table %>% 
   left_join(cohort_BAS) %>% 
   filter(later=="Y") %>% 
@@ -39,7 +39,7 @@ filtered_combined_table %>%
 ```
 
 ## isoDCA
-```{r, warning=F, message=FALSE}
+```{r 04-Tmod-3, warning=F, message=FALSE}
 filtered_combined_table %>% 
   left_join(cohort_BAS) %>% 
   filter(later=="Y") %>% 
@@ -58,7 +58,7 @@ filtered_combined_table %>%
 ```
 
 ## OMCA
-```{r, warning=F, message=F}
+```{r 04-Tmod-4, warning=F, message=F}
 conc_all_filtered %>% 
   left_join(cohort_BAS) %>% 
   filter(later=="Y") %>% 

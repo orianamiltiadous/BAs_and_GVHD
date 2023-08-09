@@ -1,7 +1,7 @@
 # Introduction: load the datasets
 
 ## Load packages
-```{r, warning=F, message=F}
+```{r 01-intro-1, warning=F, message=F}
 library(janitor)
 library(readxl)
 library(tidyverse)
@@ -10,7 +10,7 @@ library(data.table)
 ```
 
 ## Load datasets
-```{r, warning=F, message=F}
+```{r 01-intro-2, warning=F, message=F}
 #patient cohort
 cohort_BAS<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/cohort_BAS.csv")
 ursodiol<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/ursodiol.csv")
@@ -35,5 +35,33 @@ taxa_bas_later<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/
 
 #ursodiol cohort: double check that it's ok to share
 patients_urso_CIF<- read_csv( "/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/patients_urso_CIF.csv")
+
+
+categorize_bile_acids <- function(df, ba_families){
+  df %>% 
+    left_join(ba_families) %>% 
+  mutate(primary_pool=ifelse(prim_vs_sec=="Primary", value, 0)) %>% 
+  mutate(secondary_pool=ifelse(prim_vs_sec=="Secondary", value, 0)) %>% 
+  mutate(sulfated_pool=ifelse(sulfated=="Y", value, 0)) %>% 
+  mutate(conjugated_pool=ifelse(amidated=="Y" & sulfated=="N", value, 0)) %>% 
+  mutate(unconjugated_pool=ifelse(amidated=="N" & sulfated=="N", value, 0)) %>% 
+  mutate(secondary_nonUDCA=ifelse(prim_vs_sec=="Secondary" & udca=="N", value, 0)) %>% 
+  mutate(total_BAs=value) %>% 
+  mutate(total_nonUDCA_pool=ifelse(udca=="N", value, 0)) %>% 
+  mutate(glycine_pool=ifelse(glycine=="Y" & sulfated=="N", value, 0)) %>% 
+  mutate(taurine_pool=ifelse(taurine=="Y" & sulfated=="N", value, 0)) %>% 
+  mutate(taurine_SBA_pool=ifelse(taurine=="Y" & prim_vs_sec=="Secondary" & sulfated=="N", value, 0)) %>% 
+  mutate(taurine_PBA_pool=ifelse(taurine=="Y" & prim_vs_sec=="Primary" & sulfated=="N", value, 0)) %>% 
+  mutate(glycine_SBA_pool=ifelse(glycine=="Y"& prim_vs_sec=="Secondary" & sulfated=="N", value, 0)) %>% 
+  mutate(glycine_PBA_pool=ifelse(glycine=="Y" &prim_vs_sec=="Primary"& sulfated=="N", value, 0)) %>% 
+  select(-colnames(ba_families), -value) 
+}
 ```
+
+
+
+
+
+
+
 
