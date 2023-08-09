@@ -1,6 +1,0 @@
-"0","later<- cohort_BAS %>%filter(later==""Y"") %>% 
-  filter(ursodiol==""Y"") %>% 
-  select(sampleid, GI_GVHD) %>% 
-  left_join(conc_all_filtered)
-"
-"2","Joining with `by = join_by(sampleid)`"
