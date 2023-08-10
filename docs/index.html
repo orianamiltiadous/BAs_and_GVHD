@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 Diversity, bai operon and domination | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</title>
+  <title>Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</title>
   <meta name="description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 Diversity, bai operon and domination | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
+  <meta property="og:title" content="Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
   <meta name="github-repo" content="orianamiltiadous/BAs_and_GVHD/" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 Diversity, bai operon and domination | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
+  <meta name="twitter:title" content="Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
   
   <meta name="twitter:description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"/>
-<link rel="next" href="evaluation-of-udca-exposure-and-clinical-outcomes.html"/>
+
+<link rel="next" href="introduction-load-the-datasets.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -248,107 +248,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="diversity-bai-operon-and-domination" class="section level1 hasAnchor" number="8">
-<h1><span class="header-section-number">Chapter 8</span> Diversity, bai operon and domination<a href="diversity-bai-operon-and-domination.html#diversity-bai-operon-and-domination" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="evaluate-correlation-of-a-diversity-and-bai-operon-sum" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> Evaluate correlation of a-diversity and bai operon sum<a href="diversity-bai-operon-and-domination.html#evaluate-correlation-of-a-diversity-and-bai-operon-sum" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="diversity-bai-operon-and-domination.html#cb33-1" aria-hidden="true" tabindex="-1"></a>data_ba<span class="ot">&lt;-</span> asv_alpha_all <span class="sc">%&gt;%</span>  </span>
-<span id="cb33-2"><a href="diversity-bai-operon-and-domination.html#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(bai_genes_clean <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(sampleid, bai_operon_sum)) <span class="sc">%&gt;%</span> </span>
-<span id="cb33-3"><a href="diversity-bai-operon-and-domination.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(cohort_BAS) <span class="sc">%&gt;%</span> </span>
-<span id="cb33-4"><a href="diversity-bai-operon-and-domination.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ursodiol<span class="sc">==</span><span class="st">&quot;Y&quot;</span>)</span>
-<span id="cb33-5"><a href="diversity-bai-operon-and-domination.html#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-6"><a href="diversity-bai-operon-and-domination.html#cb33-6" aria-hidden="true" tabindex="-1"></a>data_ba <span class="sc">%&gt;%</span> </span>
-<span id="cb33-7"><a href="diversity-bai-operon-and-domination.html#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log10</span>(simpson_reciprocal), <span class="at">y=</span><span class="fu">log10</span>(bai_operon_sum<span class="fl">+0.01</span>)))<span class="sc">+</span></span>
-<span id="cb33-8"><a href="diversity-bai-operon-and-domination.html#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.6</span>)<span class="sc">+</span></span>
-<span id="cb33-9"><a href="diversity-bai-operon-and-domination.html#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_cor</span>(<span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)<span class="sc">+</span></span>
-<span id="cb33-10"><a href="diversity-bai-operon-and-domination.html#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>)<span class="sc">+</span></span>
-<span id="cb33-11"><a href="diversity-bai-operon-and-domination.html#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb33-12"><a href="diversity-bai-operon-and-domination.html#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;bai operon log10(cpm)&quot;</span>)<span class="sc">+</span></span>
-<span id="cb33-13"><a href="diversity-bai-operon-and-domination.html#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;a-diversity&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/07-div-domination-1-1.png" width="672" /></p>
+<div id="header">
+<h1 class="title">Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</h1>
+<p class="author"><em>Oriana Miltiadous</em></p>
+<p class="date"><em>2023-08-10</em></p>
 </div>
-<div id="identify-patients-with-monodomination-by-16s" class="section level2 hasAnchor" number="8.2">
-<h2><span class="header-section-number">8.2</span> Identify patients with monodomination by 16S<a href="diversity-bai-operon-and-domination.html#identify-patients-with-monodomination-by-16s" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="diversity-bai-operon-and-domination.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create dataset with asv</span></span>
-<span id="cb34-2"><a href="diversity-bai-operon-and-domination.html#cb34-2" aria-hidden="true" tabindex="-1"></a>samples_asv<span class="ot">&lt;-</span>cohort_BAS <span class="sc">%&gt;%</span> </span>
-<span id="cb34-3"><a href="diversity-bai-operon-and-domination.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(later<span class="sc">==</span><span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-4"><a href="diversity-bai-operon-and-domination.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sampleid) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-5"><a href="diversity-bai-operon-and-domination.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(counts_samples <span class="sc">%&gt;%</span> </span>
-<span id="cb34-6"><a href="diversity-bai-operon-and-domination.html#cb34-6" aria-hidden="true" tabindex="-1"></a>               <span class="fu">select</span>(sampleid, asv_key, count, count_total)) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-7"><a href="diversity-bai-operon-and-domination.html#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(asv_annotation_blast_ag <span class="sc">%&gt;%</span> </span>
-<span id="cb34-8"><a href="diversity-bai-operon-and-domination.html#cb34-8" aria-hidden="true" tabindex="-1"></a>               <span class="fu">select</span>(asv_key, kingdom, phylum, class, ordr, family, genus)) <span class="sc">%&gt;%</span></span>
-<span id="cb34-9"><a href="diversity-bai-operon-and-domination.html#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">relab=</span>count<span class="sc">/</span>count_total) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-10"><a href="diversity-bai-operon-and-domination.html#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sampleid, genus)</span>
-<span id="cb34-11"><a href="diversity-bai-operon-and-domination.html#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-12"><a href="diversity-bai-operon-and-domination.html#cb34-12" aria-hidden="true" tabindex="-1"></a>pathogens_pre<span class="ot">&lt;-</span> samples_asv <span class="sc">%&gt;%</span> </span>
-<span id="cb34-13"><a href="diversity-bai-operon-and-domination.html#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(genus<span class="sc">==</span><span class="st">&quot;Enterococcus&quot;</span><span class="sc">|</span>genus<span class="sc">==</span><span class="st">&quot;Streptococcus&quot;</span><span class="sc">|</span>phylum<span class="sc">==</span><span class="st">&quot;Proteobacteria&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-14"><a href="diversity-bai-operon-and-domination.html#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">enterococcus=</span><span class="fu">ifelse</span>(genus<span class="sc">==</span><span class="st">&quot;Enterococcus&quot;</span>, relab, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-15"><a href="diversity-bai-operon-and-domination.html#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">streptococcus=</span><span class="fu">ifelse</span>(genus<span class="sc">==</span><span class="st">&quot;Streptococcus&quot;</span>, relab, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-16"><a href="diversity-bai-operon-and-domination.html#cb34-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proteobacteria=</span><span class="fu">ifelse</span>(phylum<span class="sc">==</span><span class="st">&quot;Proteobacteria&quot;</span>, relab, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-17"><a href="diversity-bai-operon-and-domination.html#cb34-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">enterococcus_dom=</span><span class="fu">ifelse</span>(enterococcus<span class="sc">&gt;=</span><span class="fl">0.3</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;N&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-18"><a href="diversity-bai-operon-and-domination.html#cb34-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">streptococcus_dom=</span><span class="fu">ifelse</span>(streptococcus<span class="sc">&gt;=</span><span class="fl">0.3</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;N&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-19"><a href="diversity-bai-operon-and-domination.html#cb34-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">proteobacteria_dom=</span><span class="fu">ifelse</span>(proteobacteria<span class="sc">&gt;=</span><span class="fl">0.3</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;N&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-20"><a href="diversity-bai-operon-and-domination.html#cb34-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">any_dom=</span><span class="fu">ifelse</span>(enterococcus_dom<span class="sc">==</span><span class="st">&quot;Y&quot;</span><span class="sc">|</span>streptococcus_dom<span class="sc">==</span><span class="st">&quot;Y&quot;</span><span class="sc">|</span>proteobacteria_dom<span class="sc">==</span><span class="st">&quot;Y&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;N&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-21"><a href="diversity-bai-operon-and-domination.html#cb34-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sampleid) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-22"><a href="diversity-bai-operon-and-domination.html#cb34-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(any_dom)) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span>)</span></code></pre></div>
-</div>
-<div id="domination-and-a-diversity" class="section level2 hasAnchor" number="8.3">
-<h2><span class="header-section-number">8.3</span> Domination and a-diversity<a href="diversity-bai-operon-and-domination.html#domination-and-a-diversity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="diversity-bai-operon-and-domination.html#cb35-1" aria-hidden="true" tabindex="-1"></a>pathogens_pre <span class="sc">%&gt;%</span> <span class="fu">inner_join</span>(asv_alpha_all) <span class="sc">%&gt;%</span> </span>
-<span id="cb35-2"><a href="diversity-bai-operon-and-domination.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>any_dom, <span class="at">y=</span>simpson_reciprocal, <span class="at">color=</span>any_dom))<span class="sc">+</span></span>
-<span id="cb35-3"><a href="diversity-bai-operon-and-domination.html#cb35-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_boxplot</span>(<span class="at">width=</span><span class="fl">0.2</span>, <span class="at">lwd=</span><span class="fl">0.8</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb35-4"><a href="diversity-bai-operon-and-domination.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.3</span>, <span class="at">alpha=</span><span class="fl">0.3</span>, <span class="at">size=</span><span class="fl">2.5</span>)<span class="sc">+</span></span>
-<span id="cb35-5"><a href="diversity-bai-operon-and-domination.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;log10(a-div)&quot;</span>)<span class="sc">+</span></span>
-<span id="cb35-6"><a href="diversity-bai-operon-and-domination.html#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;domination&quot;</span>)<span class="sc">+</span></span>
-<span id="cb35-7"><a href="diversity-bai-operon-and-domination.html#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb35-8"><a href="diversity-bai-operon-and-domination.html#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(<span class="at">comparisons=</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Y&quot;</span>, <span class="st">&quot;N&quot;</span>)),</span>
-<span id="cb35-9"><a href="diversity-bai-operon-and-domination.html#cb35-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">method=</span><span class="st">&quot;wilcox.test&quot;</span>,</span>
-<span id="cb35-10"><a href="diversity-bai-operon-and-domination.html#cb35-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">correct=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb35-11"><a href="diversity-bai-operon-and-domination.html#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;turquoise4&quot;</span>,<span class="st">&quot;darkviolet&quot;</span>))<span class="sc">+</span></span>
-<span id="cb35-12"><a href="diversity-bai-operon-and-domination.html#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/07-div-domination-3-1.png" width="672" /></p>
-</div>
-<div id="domination-and-bai-operon" class="section level2 hasAnchor" number="8.4">
-<h2><span class="header-section-number">8.4</span> Domination and bai operon<a href="diversity-bai-operon-and-domination.html#domination-and-bai-operon" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="diversity-bai-operon-and-domination.html#cb36-1" aria-hidden="true" tabindex="-1"></a>pathogens_pre <span class="sc">%&gt;%</span> <span class="fu">inner_join</span>(bai_genes_clean <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(sampleid, bai_operon_sum)) <span class="sc">%&gt;%</span> </span>
-<span id="cb36-2"><a href="diversity-bai-operon-and-domination.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>any_dom, <span class="at">y=</span><span class="fu">log10</span>(bai_operon_sum<span class="fl">+0.01</span>),  <span class="at">color=</span>any_dom))<span class="sc">+</span></span>
-<span id="cb36-3"><a href="diversity-bai-operon-and-domination.html#cb36-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_boxplot</span>(<span class="at">width=</span><span class="fl">0.2</span>, <span class="at">lwd=</span><span class="fl">0.8</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb36-4"><a href="diversity-bai-operon-and-domination.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.3</span>, <span class="at">alpha=</span><span class="fl">0.3</span>, <span class="at">size=</span><span class="fl">2.5</span>)<span class="sc">+</span></span>
-<span id="cb36-5"><a href="diversity-bai-operon-and-domination.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;log10(bai sum)&quot;</span>)<span class="sc">+</span></span>
-<span id="cb36-6"><a href="diversity-bai-operon-and-domination.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;domination&quot;</span>)<span class="sc">+</span></span>
-<span id="cb36-7"><a href="diversity-bai-operon-and-domination.html#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb36-8"><a href="diversity-bai-operon-and-domination.html#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(<span class="at">comparisons=</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Y&quot;</span>, <span class="st">&quot;N&quot;</span>)),</span>
-<span id="cb36-9"><a href="diversity-bai-operon-and-domination.html#cb36-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">method=</span><span class="st">&quot;wilcox.test&quot;</span>,</span>
-<span id="cb36-10"><a href="diversity-bai-operon-and-domination.html#cb36-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">correct=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb36-11"><a href="diversity-bai-operon-and-domination.html#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;turquoise4&quot;</span>,<span class="st">&quot;darkviolet&quot;</span>))<span class="sc">+</span></span>
-<span id="cb36-12"><a href="diversity-bai-operon-and-domination.html#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/07-div-domination-4-1.png" width="672" /></p>
-</div>
-<div id="sbas-and-domination" class="section level2 hasAnchor" number="8.5">
-<h2><span class="header-section-number">8.5</span> SBAs and domination<a href="diversity-bai-operon-and-domination.html#sbas-and-domination" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="diversity-bai-operon-and-domination.html#cb37-1" aria-hidden="true" tabindex="-1"></a>pathogens_pre <span class="sc">%&gt;%</span> <span class="fu">inner_join</span>(later_pools_final) <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2"><a href="diversity-bai-operon-and-domination.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>any_dom, <span class="at">y=</span><span class="fu">log10</span>(secondary_nonUDCA), <span class="at">color=</span>any_dom))<span class="sc">+</span></span>
-<span id="cb37-3"><a href="diversity-bai-operon-and-domination.html#cb37-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_boxplot</span>(<span class="at">width=</span><span class="fl">0.2</span>, <span class="at">lwd=</span><span class="fl">0.8</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb37-4"><a href="diversity-bai-operon-and-domination.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.3</span>, <span class="at">alpha=</span><span class="fl">0.3</span>, <span class="at">size=</span><span class="fl">2.5</span>)<span class="sc">+</span></span>
-<span id="cb37-5"><a href="diversity-bai-operon-and-domination.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;log10(SBAs*)&quot;</span>)<span class="sc">+</span></span>
-<span id="cb37-6"><a href="diversity-bai-operon-and-domination.html#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;domination&quot;</span>)<span class="sc">+</span></span>
-<span id="cb37-7"><a href="diversity-bai-operon-and-domination.html#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb37-8"><a href="diversity-bai-operon-and-domination.html#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(<span class="at">comparisons=</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Y&quot;</span>, <span class="st">&quot;N&quot;</span>)),</span>
-<span id="cb37-9"><a href="diversity-bai-operon-and-domination.html#cb37-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">method=</span><span class="st">&quot;wilcox.test&quot;</span>,</span>
-<span id="cb37-10"><a href="diversity-bai-operon-and-domination.html#cb37-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">correct=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb37-11"><a href="diversity-bai-operon-and-domination.html#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;turquoise4&quot;</span>,<span class="st">&quot;darkviolet&quot;</span>))<span class="sc">+</span></span>
-<span id="cb37-12"><a href="diversity-bai-operon-and-domination.html#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/07-div-domination-5-1.png" width="672" /></p>
+<div id="microbial-bile-acid-metabolism-shapes-t-cell-responses-during-inflammation" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation<a href="index.html#microbial-bile-acid-metabolism-shapes-t-cell-responses-during-inflammation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="evaluation-of-udca-exposure-and-clinical-outcomes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+<a href="introduction-load-the-datasets.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -379,7 +294,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/orianamiltiadous/BAs_and_GVHD/edit/main/07_div_domination.Rmd",
+"link": "https://github.com/orianamiltiadous/BAs_and_GVHD/edit/main/index.Rmd",
 "text": "Edit"
 },
 "history": {

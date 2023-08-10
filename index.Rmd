@@ -12,6 +12,7 @@ link-citations: yes
 github-repo: orianamiltiadous/BAs_and_GVHD/
 ---
 
+# Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation
 
 ```{r index-1, include=FALSE}
 # automatically create a bib database for R packages
