@@ -1,7 +1,7 @@
 # Create landscape of all peri-GVHD-onset samples (figure 5)
 
 ## Define sample order from higher nonUDCA secondary BAs to lower
-```{r, warning=F, message=F}
+```{r 06-landscape-1, warning=F, message=F}
 samples_key<-BSH_metalphlan %>% distinct(sampleid) %>%  
   left_join(later_pools_final %>% select(sampleid, secondary_nonUDCA)) %>% 
   left_join(cohort_BAS) %>% 
@@ -13,7 +13,7 @@ level_order <- samples_key$sampleid
 ```
 
 ## GI GVHD plot
-```{r, warning=F, message=F}
+```{r 06-landscape-2, warning=F, message=F}
 gi_gvhd_plot<-cohort_BAS %>% 
   filter(later=="Y") %>% 
   ggplot((aes(x = factor(sampleid, levels = level_order), y = 1, fill = GI_GVHD))) + 
@@ -29,7 +29,7 @@ gi_gvhd_plot
 ```
 
 ## SBA plot
-```{r, warning=F, message=F}
+```{r 06-landscape-3, warning=F, message=F}
 sba_plot<-ggplot(samples_key, aes(x=factor(sampleid, level=level_order), y=log10(secondary_nonUDCA)))+
   geom_point(size=3)+theme_classic()+
   ylab("log(SBAs*)")+
@@ -39,7 +39,7 @@ sba_plot
 ```
 
 ## A-diversity plot
-```{r, warning=F, message=F}
+```{r 06-landscape-4, warning=F, message=F}
 adiv_pre<-cohort_BAS %>% 
   filter(later=="Y") %>% 
   left_join(asv_alpha_all) %>%  #add a-diversity
@@ -61,7 +61,7 @@ adiv_plot
 ```
 
 ## Bile acid related genes
-```{r, warning=F, message=F}
+```{r 06-landscape-5, warning=F, message=F}
 bai_genes_clean$sampleid <-gsub("FMT_", "FMT.", bai_genes_clean$sampleid)
 
 ba_genes_pre<-samples_key %>% 
@@ -97,7 +97,7 @@ bai_plot
 ```
 
 ## Microbiome composition
-```{r, warning=F, message=F}
+```{r 06-landscape-6, warning=F, message=F}
 setDT(asv_annotation_blast_color_ag)
 asv_color_base_set = unique(asv_annotation_blast_color_ag[,.(color_label_group,color_base)])
 color_base_set_asv_carT = asv_color_base_set$color_base
@@ -145,7 +145,7 @@ print(gg_composition)
 ```
 
 ## Add all plots together
-```{r, message=F, warning=F}
+```{r 06-landscape-7, message=F, warning=F}
 library(cowplot)
 last<-plot_grid(gi_gvhd_plot, sba_plot, bai_plot, adiv_plot, gg_composition, 
           #labels = c("A", "B", "C", "D", "E"),

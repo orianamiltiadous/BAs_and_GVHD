@@ -1,7 +1,7 @@
 # Diversity, bai operon and domination
 
 ## Evaluate correlation of a-diversity and bai operon sum
-```{r, warning=F, message=F}
+```{r 07-div-domination-1, warning=F, message=F}
 data_ba<- asv_alpha_all %>%  
   inner_join(bai_genes_clean %>% distinct(sampleid, bai_operon_sum)) %>% 
   left_join(cohort_BAS) %>% 
@@ -18,7 +18,7 @@ ggplot(aes(x=log10(simpson_reciprocal), y=log10(bai_operon_sum+0.01)))+
 ```
 
 ## Identify patients with monodomination by 16S
-```{r, warning=F, message=F}
+```{r 07-div-domination-2, warning=F, message=F}
 #create dataset with asv
 samples_asv<-cohort_BAS %>% 
   filter(later=="Y") %>% 
@@ -44,7 +44,7 @@ pathogens_pre<- samples_asv %>%
 ```
 
 ## Domination and a-diversity
-```{r, warning=F, message=F}
+```{r 07-div-domination-3, warning=F, message=F}
 pathogens_pre %>% inner_join(asv_alpha_all) %>% 
   ggplot(aes(x=any_dom, y=simpson_reciprocal, color=any_dom))+
    geom_boxplot(width=0.2, lwd=0.8, outlier.shape = NA) +
@@ -60,7 +60,7 @@ pathogens_pre %>% inner_join(asv_alpha_all) %>%
 ```
 
 ## Domination and bai operon
-```{r, warning=F, message=F}
+```{r 07-div-domination-4, warning=F, message=F}
 pathogens_pre %>% inner_join(bai_genes_clean %>% distinct(sampleid, bai_operon_sum)) %>% 
   ggplot(aes(x=any_dom, y=log10(bai_operon_sum+0.01),  color=any_dom))+
    geom_boxplot(width=0.2, lwd=0.8, outlier.shape = NA) +
@@ -76,7 +76,7 @@ pathogens_pre %>% inner_join(bai_genes_clean %>% distinct(sampleid, bai_operon_s
 ```
 
 ## SBAs and domination
-```{r, warning=F, message=F}
+```{r 07-div-domination-5, warning=F, message=F}
 pathogens_pre %>% inner_join(later_pools_final) %>% 
   ggplot(aes(x=any_dom, y=log10(secondary_nonUDCA), color=any_dom))+
    geom_boxplot(width=0.2, lwd=0.8, outlier.shape = NA) +
@@ -91,7 +91,7 @@ pathogens_pre %>% inner_join(later_pools_final) %>%
   theme(legend.position="none")
 ```
 
-```{r}
+```{r 07-div-domination-6}
 
 ```
 

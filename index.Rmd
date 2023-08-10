@@ -14,7 +14,7 @@ github-repo: rstudio/bookdown-demo
 ---
 
 
-```{r include=FALSE}
+```{r index-1, include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'

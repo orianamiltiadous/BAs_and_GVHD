@@ -1,7 +1,7 @@
 
 
 # Analyze the effect of UDCA administration on the bile acid pool (supplementary figure 5)
-```{r, warning=F, message=F}
+```{r 02-ursodiol-1, warning=FALSE, message=FALSE}
 #summarize bile acid pools
 both_conc<- cohort_BAS %>% select(-ursodiol)%>%
   left_join(conc_all_filtered) %>% clean_names()
@@ -10,24 +10,9 @@ both_conc<- cohort_BAS %>% select(-ursodiol)%>%
 both_conc_pools<-both_conc %>% 
   gather("bile_acid", "value", names(.)[8]:names(.)[ncol(.)]) %>% 
   select(-gi_gvhd, -later, -periengr) %>% 
-  left_join(ba_families) %>% 
   filter(bile_acid!="beta_muricholic_acid") %>% #removing because it's not measured in all samples
   filter(bile_acid!="omega_muricholic_acid") %>%  #removing because it's not measured in all samples
-  mutate(primary_pool=ifelse(prim_vs_sec=="Primary", value, 0)) %>% 
-  mutate(secondary_pool=ifelse(prim_vs_sec=="Secondary", value, 0)) %>% 
-  mutate(sulfated_pool=ifelse(sulfated=="Y", value, 0)) %>% 
-  mutate(conjugated_pool=ifelse(amidated=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(unconjugated_pool=ifelse(amidated=="N" & sulfated=="N", value, 0)) %>% 
-  mutate(secondary_nonUDCA=ifelse(prim_vs_sec=="Secondary" & udca=="N", value, 0)) %>% 
-  mutate(total_BAs=value) %>% 
-  mutate(total_nonUDCA_pool=ifelse(udca=="N", value, 0)) %>% 
-  mutate(glycine_pool=ifelse(glycine=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_pool=ifelse(taurine=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_SBA_pool=ifelse(taurine=="Y" & prim_vs_sec=="Secondary" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_PBA_pool=ifelse(taurine=="Y" & prim_vs_sec=="Primary" & sulfated=="N", value, 0)) %>% 
-  mutate(glycine_SBA_pool=ifelse(glycine=="Y"& prim_vs_sec=="Secondary" & sulfated=="N", value, 0)) %>% 
-  mutate(glycine_PBA_pool=ifelse(glycine=="Y" &prim_vs_sec=="Primary"& sulfated=="N", value, 0)) %>% 
-  select(-colnames(ba_families), -value) 
+  categorize_bile_acids(ba_families) 
 
 both_conc_pools_final<-both_conc_pools %>% 
   group_by(sampleid) %>% 
@@ -40,7 +25,7 @@ both_conc_pools_final$ursodiol <-factor(both_conc_pools_final$ursodiol,
 ```
 
 ##Evaluation of ursodiol exposure and UDCA concentration
-```{r, warning=F, message=F}
+```{r 02-ursodiol-2, warning=FALSE, message=FALSE}
 ursodiol_BAs<-both_conc %>% 
   left_join(ursodiol)
   
@@ -67,7 +52,7 @@ ursodiol_BAs %>%
 ```
 
 ## Plot ursodiol exposure and secondary BAs concentrations
-```{r}
+```{r 02-ursodiol-3}
 both_conc_pools_final %>% 
   ggplot(aes(x=ursodiol, y=log10(secondary_pool), color=ursodiol)) +
   geom_boxplot(width=0.2, outlier.shape =NA, lwd=.7)+
@@ -87,7 +72,7 @@ both_conc_pools_final %>%
 ```
 
 ## Plot correlation of ursodiol with other bile acid pools: plot conjugated UDCA (tauroursodeoxycholic_acid+glycoursodeoxycholic_acid), TBAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA total BAs (total_nonUDCA_pool), nonUDCA SBAs (secondary_nonUDCA), secondary/primary ratio (SP_ratio)
-```{r, message=F, warning=F}
+```{r 02-ursodiol-4, message=FALSE, warning=FALSE}
 both_conc_pools_final %>% 
   mutate(SP_ratio=secondary_pool/primary_pool) %>% 
   mutate(SP_ratio_nonUDCA=secondary_nonUDCA/primary_pool) %>% 
@@ -102,7 +87,7 @@ both_conc_pools_final %>%
 ```
 
 ## Create correlation plots to evaluate association of UDCA with all individual BAs
-```{r, warning=F, message=F}
+```{r 02-ursodiol-5, warning=FALSE, message=FALSE}
 library(corrplot)
 
 precor_data<- filtered_combined_table %>% 
@@ -113,7 +98,7 @@ corrplot(cor_data)
 ```
 
 ### Visualization of significant correlations of UDCA with individual BAs (R>0.4)
-```{r, warning=F, message=F}
+```{r 02-ursodiol-6, warning=FALSE, message=FALSE}
 precor_data_selected<- filtered_combined_table %>% 
   column_to_rownames("sampleid") %>% 
   select(ursodeoxycholic_acid, ursocholic_acid, beta_muricholic_acid, ursodeoxycholic_acid_3_sulfate, x7_ketodeoxycholic_acid, 

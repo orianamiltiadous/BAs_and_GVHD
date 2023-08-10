@@ -2,7 +2,7 @@
 # Create the bile acid pools (figure 4, supplementary figure 6,8)
 
 ## Create BA pools first for peri-GVHD-onset timepoint
-```{r, warning=F, message=F}
+```{r 03-bile-acid-pools-1, warning=F, message=F}
 later<- cohort_BAS %>%filter(later=="Y") %>% 
   filter(ursodiol=="Y") %>% 
   select(sampleid, GI_GVHD) %>% 
@@ -11,22 +11,7 @@ later<- cohort_BAS %>%filter(later=="Y") %>%
 #prep dataset prepping each BA depending on its classifications
 later_pools<-later %>% 
   gather("bile_acid", "value", names(.)[5]:names(.)[ncol(.)]) %>% 
-  left_join(ba_families) %>% 
-  mutate(primary_pool=ifelse(prim_vs_sec=="Primary", value, 0)) %>% 
-  mutate(secondary_pool=ifelse(prim_vs_sec=="Secondary", value, 0)) %>% 
-  mutate(sulfated_pool=ifelse(sulfated=="Y", value, 0)) %>% 
-  mutate(conjugated_pool=ifelse(amidated=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(unconjugated_pool=ifelse(amidated=="N" & sulfated=="N", value, 0)) %>% 
-  mutate(secondary_nonUDCA=ifelse(prim_vs_sec=="Secondary" & udca=="N", value, 0)) %>% 
-  mutate(total_BAs=value) %>% 
-  mutate(total_nonUDCA_pool=ifelse(udca=="N", value, 0)) %>% 
-  mutate(glycine_pool=ifelse(glycine=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_pool=ifelse(taurine=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_SBA_pool=ifelse(taurine=="Y" & prim_vs_sec=="Secondary" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_PBA_pool=ifelse(taurine=="Y" & prim_vs_sec=="Primary" & sulfated=="N", value, 0)) %>% 
-  mutate(glycine_SBA_pool=ifelse(glycine=="Y"& prim_vs_sec=="Secondary" & sulfated=="N", value, 0)) %>% 
-  mutate(glycine_PBA_pool=ifelse(glycine=="Y" &prim_vs_sec=="Primary"& sulfated=="N", value, 0)) %>% 
-  select(-colnames(ba_families), -value) 
+  categorize_bile_acids(ba_families) 
 
 #replace NAs with 0 to be able to add sums
 later_pools[is.na(later_pools)]<-0
@@ -40,7 +25,7 @@ later_pools_final<-later_pools %>%
 
 
 ### Plot: TBAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA SBAs (secondary_nonUDCA), conjugated (conjugated_pool), unconjugated (unconjugated_pool), sulfated (sulfated_pool)
-```{r, warning=F, message=FALSE}
+```{r 03-bile-acid-pools-2, warning=F, message=FALSE}
 later_pools_final %>% 
   left_join(cohort_BAS) %>%
   mutate(GI_GVHD=ifelse(GI_GVHD=="Y", "GVHD", "CTRL")) %>% 
@@ -61,7 +46,7 @@ later_pools_final %>%
 ```
 
 ### Create pies 
-```{r, warning=FALSE, message=FALSE}
+```{r 03-bile-acid-pools-3, warning=FALSE, message=FALSE}
 dataset_pre<-later_pools_final %>% 
   gather("BA_pool", "value", names(.)[2]:names(.)[ncol(.)]) %>% 
   left_join(cohort_BAS %>% 
@@ -107,7 +92,7 @@ ggplot(dataset_pre2, aes(x="", y=perc, fill=group))+
 
 
 ## Create BA pools for peri-engraftment timepoint
-```{r, warning=F, message=F}
+```{r 03-bile-acid-pools-4, warning=F, message=F}
 periengr_conc<- cohort_BAS %>%filter(periengr=="Y") %>% 
   filter(ursodiol=="Y") %>% 
   select(sampleid, GI_GVHD) %>% 
@@ -117,23 +102,8 @@ periengr_conc<- cohort_BAS %>%filter(periengr=="Y") %>%
 #prep dataset prepping each BA depending on its classifications
 periengr_pools<-periengr_conc %>% 
   gather("bile_acid", "value", names(.)[3]:names(.)[ncol(.)]) %>% 
-  left_join(ba_families) %>% 
-  mutate(primary_pool=ifelse(prim_vs_sec=="Primary", value, 0)) %>% 
-  mutate(secondary_pool=ifelse(prim_vs_sec=="Secondary", value, 0)) %>% 
-  mutate(sulfated_pool=ifelse(sulfated=="Y", value, 0)) %>% 
-  mutate(conjugated_pool=ifelse(amidated=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(unconjugated_pool=ifelse(amidated=="N" & sulfated=="N", value, 0)) %>% 
-  mutate(secondary_nonUDCA=ifelse(prim_vs_sec=="Secondary" & udca=="N", value, 0)) %>% 
-  mutate(total_BAs=value) %>% 
-  mutate(total_nonUDCA_pool=ifelse(udca=="N", value, 0)) %>% 
-  mutate(glycine_pool=ifelse(glycine=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_pool=ifelse(taurine=="Y" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_SBA_pool=ifelse(taurine=="Y" & prim_vs_sec=="Secondary" & sulfated=="N", value, 0)) %>% 
-  mutate(taurine_PBA_pool=ifelse(taurine=="Y" & prim_vs_sec=="Primary" & sulfated=="N", value, 0)) %>% 
-  mutate(glycine_SBA_pool=ifelse(glycine=="Y"& prim_vs_sec=="Secondary" & sulfated=="N", value, 0)) %>% 
-  mutate(glycine_PBA_pool=ifelse(glycine=="Y" &prim_vs_sec=="Primary"& sulfated=="N", value, 0)) %>% 
-  select(-colnames(ba_families), -value) 
-  
+  categorize_bile_acids(ba_families) 
+
 #replace NAs with 0 to be able to add sums
 periengr_pools[is.na(periengr_pools)]<-0
 
@@ -144,7 +114,7 @@ periengr_pools_final<-periengr_pools %>%
 ```
 
 ###  Plot BA pools and GVHD; can plot total BAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA SBAs (secondary_nonUDCA), conjugated (conjugated_pool), unconjugated (unconjugated_pool), sulfated_pool, secondary/primary ratio and secondary*/primary ratio
-```{r, warning=F, message=F}
+```{r 03-bile-acid-pools-5, warning=F, message=F}
 periengr_pools_final %>% 
   left_join(cohort_BAS) %>%
   mutate(GI_GVHD=ifelse(GI_GVHD=="Y", "GVHD", "CTRL"))  %>% 
@@ -165,7 +135,7 @@ periengr_pools_final %>%
 
 
 ### Create pies 
-```{r, warning=F, message=F}
+```{r 03-bile-acid-pools-6, warning=F, message=F}
 dataset_pre<-periengr_pools_final %>% 
   gather("BA_pool", "value", names(.)[2]:names(.)[ncol(.)]) %>% 
   left_join(cohort_BAS %>% select(sampleid, GI_GVHD, ursodiol)) %>% 

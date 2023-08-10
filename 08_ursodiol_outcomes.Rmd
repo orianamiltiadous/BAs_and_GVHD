@@ -1,7 +1,7 @@
 # Evaluation of UDCA exposure and clinical outcomes
 
 ## Prepare the patient outcome table
-```{r, warning=F, message=F}
+```{r 08-ursodiol-outcomes-1, warning=F, message=F}
 library(tidycmprsk)
 library(ggsurvfit)
 library(tidycmprsk)
@@ -50,7 +50,7 @@ patients_urso_CIF2 <- patients_urso_CIF2 %>% mutate(donor_new=ifelse(donor_match
 ## Evaluate ursodiol exposure and overall survival
 
 ### Univariable analysis
-```{r, warning=F, message=F}
+```{r 08-ursodiol-outcomes-2, warning=F, message=F}
 KM.OS <- survfit2(Surv(OS_2yr,as.numeric(death_2yr))~ursodiol2,data=patients_urso_CIF2)
 KM.OS %>% ggsurvfit() +
   add_censor_mark() +
@@ -59,7 +59,7 @@ KM.OS %>% ggsurvfit() +
 ```
 
 ### Multivariable analysis
-```{r, warning=F, message=F}
+```{r 08-ursodiol-outcomes-3, warning=F, message=F}
 coxfit <- survival::coxph(Surv(OS_2yr,as.numeric(death_2yr))~age+sex+donor_match+graft+intensity+ursodiol2,data=patients_urso_CIF2)
 coxfit %>% tbl_regression(exponentiate=TRUE) %>% bold_p()
 ```
@@ -67,7 +67,7 @@ coxfit %>% tbl_regression(exponentiate=TRUE) %>% bold_p()
 ## Evaluation of cumulative incidences
 
 ### Cumulative incidence of GVHD-related mortality
-```{r, warning=F, message=F}
+```{r 08-ursodiol-outcomes-4, warning=F, message=F}
 gray.test.GRM <- cuminc(Surv(GRM_time_2yr, GRM_mortality_2yr)~ursodiol2, data=patients_urso_CIF2)
 
 gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="GRM") %>% 
@@ -77,7 +77,7 @@ gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="GRM") %>%
 ```
 
 
-```{r, warning=F, message=F}
+```{r 08-ursodiol-outcomes-5, warning=F, message=F}
 gray.test.GRM %>% ggcuminc(outcome="GRM") + 
   labs(
     x = "Months after HCT",
@@ -88,7 +88,7 @@ gray.test.GRM %>% ggcuminc(outcome="GRM") +
 ```
 
 ### Cumulative incidence of Relapse/progression of disease
-```{r, warning=F, message=F}
+```{r 08-ursodiol-outcomes-6, warning=F, message=F}
 gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="Relapse/PoD") %>% 
   add_p() %>% 
   add_n() %>% 
@@ -96,7 +96,7 @@ gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="Relapse/PoD") %>%
 ```
 
 ### Cumulative incidence of mortality non-related to GVHD or relapse/progression of disease
-```{r,warning=F, message=F}
+```{r 08-ursodiol-outcomes-7,warning=F, message=F}
 gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="Other") %>% 
   add_p() %>% 
   add_n() %>% 
@@ -104,7 +104,7 @@ gray.test.GRM %>% tbl_cuminc(times= c(6,12,18,24),outcome="Other") %>%
 ```
 
 ### Multivariable analysis of GVHD-related mortality
-```{r, warning=F, message=F}
+```{r 08-ursodiol-outcomes-8, warning=F, message=F}
 fgmodel.GRM <- crr(Surv(GRM_time_2yr,GRM_mortality_2yr)~age+sex+donor_match+graft+intensity+ursodiol2,data=patients_urso_CIF2)
 fgmodel.GRM %>% tbl_regression(exponentiate=TRUE) %>% bold_p()
 ```

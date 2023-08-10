@@ -3,7 +3,7 @@
 ## BSH
 
 ### Evaluate BSH abundance at peri-GVHD onset
-```{r, warning=F, message=FALSE}
+```{r 05-shotgun-1, warning=F, message=FALSE}
 BSH_metalphlan %>% 
   left_join(cohort_BAS) %>% 
   filter(later=="Y") %>% 
@@ -21,7 +21,7 @@ BSH_metalphlan %>%
 ```
 
 ### Evaluate BSH abundance at peri-engraftment time point
-```{r, message=F, warning=FALSE}
+```{r 05-shotgun-2, message=F, warning=FALSE}
 BSH_metalphlan %>% 
   left_join(cohort_BAS) %>% 
   filter(periengr=="Y") %>% 
@@ -41,7 +41,7 @@ BSH_metalphlan %>%
 ## Bai operon gene
 
 ### Evaluate correlation of bai operon gene sum and nonUDCA secondary BAs
-```{r, message=F, warning=F}
+```{r 05-shotgun-3, message=F, warning=F}
 bai_genes_clean %>% 
   distinct(sampleid, bai_operon_sum ) %>% 
   inner_join(both_conc_pools_final) %>% 
@@ -55,7 +55,7 @@ bai_genes_clean %>%
 ```
 
 ### Bai operon gene sum in peri-GVHD onset
-```{r, warning=F, message=FALSE}
+```{r 05-shotgun-4, warning=F, message=FALSE}
 bai_genes_clean %>% 
   distinct(sampleid, bai_operon_sum ) %>% 
   inner_join(cohort_BAS %>% select(sampleid, GI_GVHD, later) %>% filter(later=="Y")) %>% 
@@ -73,7 +73,7 @@ bai_genes_clean %>%
 ```
 
 ### Bai operon individual gene abundance
-```{r, warning=F, message=F}
+```{r 05-shotgun-5, warning=F, message=F}
 bai_genes_clean %>% 
   inner_join(cohort_BAS %>% select(sampleid, GI_GVHD, later) %>% filter(later=="Y")) %>% 
   ggplot(aes(x=GI_GVHD, y=log(cpm+0.01), color=GI_GVHD))+
@@ -93,7 +93,7 @@ bai_genes_clean %>%
 ## Bile acid related bacteria
 
 ### Eggerthella lenta
-```{r, warning=F, message=F}
+```{r 05-shotgun-6, warning=F, message=F}
 taxa_bas_later %>% 
   ggplot(aes(x=GI_GVHD, y=log10(eggerthella_lenta+ 1.5e-08), color=GI_GVHD))+
   geom_boxplot(width=0.2, lwd=0.8, outlier.shape = NA) +
@@ -109,7 +109,7 @@ taxa_bas_later %>%
 ```
 
 ### Ruminococcus gnavus
-```{r, warning=F, message=F}
+```{r 05-shotgun-7, warning=F, message=F}
 taxa_bas_later %>% 
   ggplot(aes(x=GI_GVHD, y=log10(ruminococcus_gnavus+ 1.4e-07), color=GI_GVHD))+
   geom_boxplot(width=0.2, lwd=0.8, outlier.shape = NA) +
