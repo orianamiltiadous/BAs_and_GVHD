@@ -58,7 +58,7 @@ bai_genes_clean %>%
 ```{r 05-shotgun-4, warning=F, message=FALSE}
 bai_genes_clean %>% 
   distinct(sampleid, bai_operon_sum ) %>% 
-  inner_join(cohort_BAS %>% select(sampleid, GI_GVHD, later) %>% filter(later=="Y")) %>% 
+  inner_join(cohort_BAS %>% select(sampleid, GI_GVHD, later, ursodiol) %>% filter(later=="Y")) %>% 
   ggplot(aes(x=GI_GVHD, y=log(bai_operon_sum+0.01), color=GI_GVHD))+
   geom_boxplot(width=0.2, lwd=0.8, outlier.shape = NA) +
   geom_jitter(width=0.3, alpha=0.3, size=2.5) +

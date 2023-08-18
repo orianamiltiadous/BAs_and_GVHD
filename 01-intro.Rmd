@@ -34,7 +34,7 @@ bai_genes_clean<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets
 taxa_bas_later<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/taxa_bas_later.csv")
 
 #ursodiol cohort: double check that it's ok to share
-patients_urso_CIF<- read_csv( "/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/patients_urso_CIF.csv")
+patients_urso_CIF<- read_csv( "/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/don't include/patients_urso_CIF.csv")
 
 
 categorize_bile_acids <- function(df, ba_families){

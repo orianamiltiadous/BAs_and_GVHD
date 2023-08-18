@@ -1,0 +1,406 @@
+---
+title: "volcano plots"
+author: "Teng Fei"
+date: "2023-08-15"
+output: html_document
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+set.seed(20220704)
+```
+
+# Analytic Data Import
+
+```{r import}
+library(biostatR); 
+library(tidyverse)
+library(ggplot2)
+library(ggridges)
+library(gridExtra)
+library(gtsummary)
+library(DESeq2)
+library(apeglm)
+library(EnhancedVolcano)
+library(limma)
+library(pheatmap)
+library(reshape2)
+
+library(ComplexHeatmap)
+library(MetBrewer)
+library(igraph)
+library(janitor)
+
+# setting MSK ggplot theme, color palette, and gtsummary theme
+theme_set(mskRvis::theme_biostat()); mskRvis::set_msk_palette()
+theme_gtsummary_compact()
+here_data() # current path to data
+
+# importing master analytic data set
+df_peri<-filtered_combined_table %>% left_join(cohort_BAS) %>% filter(periengr=="Y")
+df_late<-filtered_combined_table %>% left_join(cohort_BAS) %>% filter(later=="Y")
+
+df_ba_family<-read_xlsx("/Volumes/Macintosh HD/Users/miltiado/Documents/BA/ba_families_8_17.xlsx")
+#load(here_data("df_main.Rds"))
+df_ba_family2 <- df_ba_family[df_ba_family$bile_acid %in% colnames(filtered_combined_table),]
+#rownames(df_ba_family) <- df_ba_family$NewName2
+clinical_data<-read_csv("/Volumes/vandenbrinklab/Oriana/BAs_published_datasets/don't include/clinical_info.csv")
+```
+
+# Wilcoxon tests
+
+```{r wilcoxon}
+tab_peri_ba <- df_peri %>% select(-ursodiol,-later,-periengr,-sampleid) %>%
+  tbl_summary(by = GI_GVHD,
+              digits = all_continuous() ~ 1,
+              statistic = all_continuous() ~ "{median} ({p25}, {p75})") %>%
+  add_p() %>%
+  add_q() %>%
+  bold_p(q=FALSE) %>% 
+  sort_p(q=TRUE) %>% 
+  modify_caption("**Bile acids: Peri-engraftment**")
+
+tab_late_ba <- df_late %>% select(-ursodiol,-later,-periengr,-sampleid) %>%
+  tbl_summary(by = GI_GVHD,
+              digits = all_continuous() ~ 1,
+              statistic = all_continuous() ~ "{median} ({p25}, {p75})") %>%
+  add_p() %>%
+  add_q() %>%
+  bold_p(q=TRUE) %>% 
+  sort_p(q=TRUE) %>% 
+  modify_caption("**Bile acids: Peri-GVHD-onset**")
+```
+
+
+```{r wilcoxon}
+tab_peri_cov <- df_peri %>% 
+  left_join(clinical_data) %>% 
+  left_join(pathogens_pre) %>% 
+  select(GI_GVHD, disease,graft,intensity,hla,enterococcus_dom,
+                                   any_dom,age,sex) %>%
+  tbl_summary(by = GI_GVHD) %>%
+  add_p() %>% 
+  bold_p() %>% 
+  sort_p() %>% 
+  modify_caption("**Patient characteristics: Peri-engraftment**")
+```
+
+
+```{r wilcoxon}
+tab_late_cov <- df_late %>% 
+  left_join(clinical_data) %>% 
+  left_join(pathogens_pre) %>% 
+  select(GI_GVHD,
+                                   disease,graft,intensity,hla,enterococcus_dom,
+                                   any_dom,age,sex) %>%
+  tbl_summary(by = GI_GVHD) %>%
+  add_p() %>% 
+  bold_p() %>% 
+  sort_p() %>% 
+  modify_caption("**Patient characteristics: Peri-GVHD-onset**")
+
+```
+
+# Limma
+```{r limma_peri}
+df_peri_ct <- df_peri %>% ungroup() %>% 
+  select(-ursodiol,-later,-periengr, -GI_GVHD, -PID)
+
+df_peri_meta <- df_peri %>% 
+  select(-ursodiol,-later,-periengr) %>%  
+  left_join(clinical_data) %>% 
+  left_join(pathogens_pre)
+
+rownames(df_peri_ct) <- df_peri_meta$sampleid
+rownames(df_peri_meta) <- df_peri_meta$sampleid
+df_peri_ct2<-df_peri_ct %>% select(-sampleid )
+df_peri_ct2 <- as.matrix(df_peri_ct2)
+
+design <- model.matrix(ursodiol ~ GI_GVHD + intensity + hla + age + sex,data=df_peri_meta)
+
+lmfit <- lmFit(t(log(df_peri_ct2+1)),design)
+lmfit <- eBayes(lmfit)
+PeriEngrTab <- topTable(lmfit,coef=2,number=45)
+PeriEngrTab$BA <- rownames(PeriEngrTab)
+Prev <- data.frame(Prev = colMeans(df_peri_ct > 0))
+Prev$BA <- rownames(Prev)
+PeriEngrTab <- merge(PeriEngrTab,Prev)
+design <- design[,-c(1)]
+
+volcano_peri <- EnhancedVolcano(PeriEngrTab,
+                                lab = df_ba_family[PeriEngrTab$BA,]$bile_acid,
+                                x = 'logFC',
+                                y = 'adj.P.Val',
+                                title = "GVHD vs Control: Peri-engraftment, Ursodiol, \nadjusted for clinical variables",
+                                subtitle = NULL,
+                                ylab = bquote(~-Log[10] ~ "Adjusted p-value"),
+                                xlab = bquote(~Log ~ "fold change"),
+                                caption = paste0("total = ", ncol(df_peri_ct), " variables, positive values correspond to higher abundance in Control"),
+                                pCutoff = 0.05,
+                                pCutoffCol = "adj.P.Val",
+                                FCcutoff = 1,
+                                maxoverlapsConnectors = Inf,
+                                drawConnectors = TRUE,
+                                labSize = 3.5,
+                                legendLabels = c("NS", expression(LogFC), "p-value", expression(p - value ~ and
+                                                                                                ~ logFC)),
+                                xlim=c(-5,5),
+                                ylim=c(0,3)
+)
+
+qval <- matrix(NA,nrow=45,ncol=10)
+FC <- matrix(NA,nrow=45,ncol=10)
+
+for (i in 1:10){
+  qval[,i] <- topTable(lmfit,coef=i,number=45,sort.by = "none")$adj.P.Val
+  FC[,i] <- topTable(lmfit,coef=i,number=45,sort.by = "none")$logFC
+}
+
+rownames(qval) <- rownames(FC)<-  df_ba_family2$bile_acid #df_ba_family2[rownames(topTable(lmfit,coef=i,number=45,sort.by = "none")),]$bile_acid
+colnames(qval) <- colnames(FC) <- colnames(design)
+
+qval.melt <- melt(qval[,2:10])
+FC.melt <- melt(FC[,2:10])
+colnames(qval.melt) <- c("BA","Covariates","q-value")
+colnames(FC.melt) <- c("BA","Covariates","logFC")
+qval.melt <- merge(qval.melt,FC.melt)
+qval.melt$Significance <- qval.melt$`q-value` < 0.05
+
+fig_limma_peri <- qval.melt %>% ggplot(aes(x=Covariates,y=BA,size=`q-value`,color=logFC,shape=Significance)) + geom_count() +
+  scale_size_continuous(range=c(3,0.5),
+                        breaks=c(0.005,0.05,0.1,0.5)) +
+  scale_color_gradient2(low="darkred",high="darkblue",mid="cyan") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle=45,hjust=1)) +
+  labs(title = "Peri-engraftment, Ursodiol")
+fig_limma_peri
+```
+
+```{r limma_late}
+df_late_ct <- df_late %>% ungroup() %>% 
+  select(-ursodiol,-later,-periengr, -GI_GVHD, -PID)
+
+df_late_meta <- df_late %>% select(-ursodiol,-later,-periengr) %>%  left_join(clinical_data) %>% 
+  left_join(pathogens_pre)
+
+rownames(df_late_ct) <- df_late_meta$sampleid
+rownames(df_late_meta) <- df_late_meta$sampleid
+
+df_late_ct2<-df_late_ct %>% select(-sampleid )
+df_late_ct2 <- as.matrix(df_late_ct2)
+
+design <- model.matrix(ursodiol ~ GI_GVHD + intensity + hla + age + sex,data=df_late_meta)
+
+lmfit <- lmFit(t(log(df_late_ct2+1)),design)
+lmfit <- eBayes(lmfit)
+PeriGVHDTab <- topTable(lmfit,coef=2,number=45)
+PeriGVHDTab$BA <- rownames(PeriGVHDTab)
+Prev <- data.frame(Prev = colMeans(df_late_ct > 0))
+Prev$BA <- rownames(Prev)
+PeriGVHDTab <- merge(PeriGVHDTab,Prev)
+
+volcano_late <- EnhancedVolcano(PeriGVHDTab,
+                                lab = df_ba_family[PeriGVHDTab$BA,]$bile_acid,
+                                x = 'logFC',
+                                y = 'adj.P.Val',
+                                title = "GVHD vs Control: Peri-GVHD-onset, Ursodiol, \nadjusted for clinical variables",
+                                subtitle = NULL,
+                                ylab = bquote(~-Log[10] ~ "Adjusted p-value"),
+                                xlab = bquote(~Log ~ "fold change"),
+                                caption = paste0("total = ", ncol(df_late_ct), " variables, positive values correspond to higher abundance in Control"),
+                                pCutoff = 0.05,
+                                pCutoffCol = "adj.P.Val",
+                                FCcutoff = 1,
+                                maxoverlapsConnectors = Inf,
+                                drawConnectors = TRUE,
+                                labSize = 3.5,
+                                legendLabels = c("NS", expression(LogFC), "p-value", expression(p - value ~ and
+                                                                                                ~ logFC)),
+                                xlim=c(-5,5),
+                                ylim=c(0,3)
+)
+
+qval <- matrix(NA,nrow=45,ncol=10)
+FC <- matrix(NA,nrow=45,ncol=10)
+
+for (i in 1:10){
+  qval[,i] <- topTable(lmfit,coef=i,number=45,sort.by = "none")$adj.P.Val
+  FC[,i] <- topTable(lmfit,coef=i,number=45,sort.by = "none")$logFC
+}
+
+rownames(qval) <- rownames(FC) <- df_ba_family[rownames(topTable(lmfit,coef=i,number=45,sort.by = "none")),]$bile_acid 
+design <- design[,-c(1)]
+colnames(qval) <- colnames(FC) <- colnames(design)
+
+qval.melt <- melt(qval[,2:10])
+FC.melt <- melt(FC[,2:10])
+colnames(qval.melt) <- c("BA","Covariates","q-value")
+colnames(FC.melt) <- c("BA","Covariates","logFC")
+qval.melt <- merge(qval.melt,FC.melt)
+qval.melt$Significance <- qval.melt$`q-value` < 0.05
+
+fig_limma_late <- qval.melt %>% ggplot(aes(x=Covariates,y=BA,size=`q-value`,color=logFC,shape=Significance)) + geom_count() +
+  scale_size_continuous(range=c(3,0.5),
+                        breaks=c(0.005,0.05,0.1,0.5)) +
+  scale_color_gradient2(low="darkred",high="darkblue",mid="cyan") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle=45,hjust=1)) +
+  labs(title = "Peri-GVHD-onset, Ursodiol")
+
+```
+
+
+```{r limma_all_enterococcus}
+df_all_ct <- filtered_combined_table %>% 
+   left_join(clinical_data) %>% 
+  left_join(pathogens_pre) %>% 
+  filter(!is.na(any_dom)) %>%
+  select(-sampleid,-mrn,-hct,-GI_GVHD,-datecollection,
+         -ursodiol2,-age,-enterococcus,-streptococcus,-proteobacteria,
+         -enterococcus_dom,-streptococcus_dom,-proteobacteria_dom,-any_dom)
+
+df_all_meta <- filtered_combined_table %>% 
+   left_join(clinical_data) %>% 
+  left_join(pathogens_pre) %>% 
+  left_join(cohort_BAS) %>% 
+  filter(!is.na(any_dom)) %>% 
+  select(sampleid,GI_GVHD,ursodiol,age,sex,disease,graft,
+         intensity,hla,enterococcus_dom,any_dom)
+
+rownames(df_all_ct) <- df_all_meta$sampleid
+rownames(df_all_meta) <- df_all_meta$sampleid
+
+df_all_ct <- as.matrix(df_all_ct)
+design <- model.matrix(ursodiol ~ enterococcus_dom,data=df_all_meta)
+
+lmfit <- lmFit(t(log(df_all_ct+1)),design)
+lmfit <- eBayes(lmfit)
+
+EntTab <- topTable(lmfit,coef=2,number=45)
+EntTab$BA <- rownames(EntTab)
+Prev <- data.frame(Prev = colMeans(df_all_ct > 0))
+Prev$BA <- rownames(Prev)
+EntTab <- merge(EntTab,Prev)
+
+volcano_entdom <- EnhancedVolcano(EntTab,
+                                  lab = df_ba_family[EntTab$BA,]$bile_acid,
+                                  x = 'logFC',
+                                  y = 'adj.P.Val',
+                                  title = "Enterococcus domination vs no domination: all Ursodiol samples",
+                                  subtitle = NULL,
+                                  ylab = bquote(~-Log[10] ~ "Adjusted p-value"),
+                                  xlab = bquote(~Log ~ "fold change"),
+                                  caption = paste0("total = ", ncol(df_all_ct), " variables, positive values correspond to higher abundance in Domination group"),
+                                  pCutoff = 0.05,
+                                  pCutoffCol = "adj.P.Val",
+                                  FCcutoff = 1,
+                                  maxoverlapsConnectors = Inf,
+                                  drawConnectors = TRUE,
+                                  labSize = 3.5,
+                                  legendLabels = c("NS", expression(LogFC), "p-value", expression(p - value ~ and
+                                                                                                  ~ logFC)),
+                                  xlim=c(-6,6),
+                                  ylim=c(0,8)
+)
+
+```
+
+```{r limma_all_pathogen}
+
+design <- model.matrix(ursodiol ~ any_dom,data=df_all_meta)
+lmfit <- lmFit(t(log(df_all_ct+1)),design)
+lmfit <- eBayes(lmfit)
+DomTab <- topTable(lmfit,coef=2,number=45)
+DomTab$BA <- rownames(DomTab)
+Prev <- data.frame(Prev = colMeans(df_all_ct > 0))
+Prev$BA <- rownames(Prev)
+DomTab <- merge(DomTab,Prev)
+
+volcano_dom <- EnhancedVolcano(DomTab,
+                               lab = df_ba_family[DomTab$BA,]$bile_acid,
+                               x = 'logFC',
+                               y = 'adj.P.Val',
+                               title = "Pathogen domination vs no domination: all Ursodiol samples",
+                               subtitle = NULL,
+                               ylab = bquote(~-Log[10] ~ "Adjusted p-value"),
+                               xlab = bquote(~Log ~ "fold change"),
+                               caption = paste0("total = ", ncol(df_all_ct), " variables, positive values correspond to higher abundance in Domination group"),
+                               pCutoff = 0.05,
+                               pCutoffCol = "adj.P.Val",
+                               FCcutoff = 1,
+                               maxoverlapsConnectors = Inf,
+                               drawConnectors = TRUE,
+                               labSize = 3.5,
+                               legendLabels = c("NS", expression(LogFC), "p-value", expression(p - value ~ and
+                                                                                               ~ logFC)),
+                               xlim=c(-6,6),
+                               ylim=c(0,8)
+)
+
+```
+
+# Preview tables and figures
+
+```{r preview}
+
+# Wilcoxon test, peri-GVHD
+tab_late_ba 
+
+# Patient characteristics, peri-GVHD
+tab_late_cov
+
+# Wilcoxon test, peri-engraftment
+tab_peri_ba
+
+# Patient characteristics, peri-engraftment
+tab_peri_cov
+
+# Limma results, peri-engraftment
+PeriEngrTab
+volcano_peri
+fig_limma_peri
+#write.csv(PeriEngrTab,file="~/Projects/VDB #LAB/Miltiadous-Bile-Acids-Metabolomics/results/figures/limma_periengraft.csv")
+
+# Limma results, peri-GVHD
+PeriGVHDTab
+volcano_late
+fig_limma_late
+#write.csv(PeriGVHDTab,file="~/Projects/VDB LAB/Miltiadous-Bile-Acids-Metabolomics/results/figures/limma_periGVHD.csv")
+
+# Limma results, Enterococcus domination
+EntTab
+volcano_entdom
+#write.csv(EntTab,file="~/Projects/VDB LAB/Miltiadous-Bile-Acids-Metabolomics/results/figures/limma_Enterococcus_domination.csv")
+
+# Limma results, pathogen domination
+DomTab
+volcano_dom
+#write.csv(DomTab,file="~/Projects/VDB LAB/Miltiadous-Bile-Acids-Metabolomics/results/figures/limma_pathogen_domination.csv")
+
+pdf("~/Projects/VDB LAB/Miltiadous-Bile-Acids-Metabolomics/results/figures/volcano_network_heatmap.pdf",width=8,height=8)
+volcano_late
+fig_limma_late
+volcano_peri
+fig_limma_peri
+volcano_dom
+volcano_entdom
+
+dev.off()
+
+```
+
+# Save Results
+
+```{r save}
+# list result objects here. save only those needed for the final report
+save(
+  tab_late_ba,tab_peri_ba,
+  tab_late_cov,tab_peri_cov,
+  PeriEngrTab,volcano_peri,fig_limma_peri,
+  PeriGVHDTab,volcano_late,fig_limma_late,
+  EntTab,volcano_entdom,
+  DomTab,volcano_dom,
+  file = here_data("results.Rdata")
+)
+```

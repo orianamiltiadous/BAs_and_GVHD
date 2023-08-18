@@ -11,6 +11,8 @@ rmd_files: [
 "05_shotgun.Rmd",
 "06_landscape.Rmd",
 "07_div_domination.Rmd",
-"08_ursodiol_outcomes.Rmd"
+"08_ursodiol_outcomes.Rmd",
+"09_RNAseq.Rmd",
+"10_RNAseq.Rmd"
 ]
 output_dir: "docs"
