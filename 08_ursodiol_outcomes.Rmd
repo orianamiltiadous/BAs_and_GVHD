@@ -1,4 +1,4 @@
-# Evaluation of UDCA exposure and clinical outcomes
+# Evaluation of UDCA exposure and clinical outcomes: Teng Fei
 
 ## Prepare the patient outcome table
 ```{r 08-ursodiol-outcomes-1, warning=F, message=F}

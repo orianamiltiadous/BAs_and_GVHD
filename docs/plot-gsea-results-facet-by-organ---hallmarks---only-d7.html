@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 13 plot GSEA results facet by organ - Hallmarks - only D7 | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</title>
+  <meta name="description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 13 plot GSEA results facet by organ - Hallmarks - only D7 | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  <meta name="github-repo" content="orianamiltiadous/BAs_and_GVHD/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 13 plot GSEA results facet by organ - Hallmarks - only D7 | Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation" />
+  
+  <meta name="twitter:description" content="This is the code to analyze the bile acids and microbiome data for patients after allogeneic transplantation developing GVHD or not." />
+  
+
+<meta name="author" content="Oriana Miltiadous" />
+
+
+<meta name="date" content="2023-08-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="read-in-the-count-file---for-now-subselect-only-day-7-data-bmt_liv_int641-genes-bmt_liv_intc425.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</a></li>
+<li class="chapter" data-level="2" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html"><i class="fa fa-check"></i><b>2</b> Introduction: load the datasets</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html#load-packages"><i class="fa fa-check"></i><b>2.1</b> Load packages</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-load-the-datasets.html"><a href="introduction-load-the-datasets.html#load-datasets"><i class="fa fa-check"></i><b>2.2</b> Load datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><i class="fa fa-check"></i><b>3</b> Analyze the effect of UDCA administration on the bile acid pool (supplementary figure 5)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#plot-ursodiol-exposure-and-secondary-bas-concentrations"><i class="fa fa-check"></i><b>3.1</b> Plot ursodiol exposure and secondary BAs concentrations</a></li>
+<li class="chapter" data-level="3.2" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#plot-correlation-of-ursodiol-with-other-bile-acid-pools-plot-conjugated-udca-tauroursodeoxycholic_acidglycoursodeoxycholic_acid-tbas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-total-bas-total_nonudca_pool-nonudca-sbas-secondary_nonudca-secondaryprimary-ratio-sp_ratio"><i class="fa fa-check"></i><b>3.2</b> Plot correlation of ursodiol with other bile acid pools: plot conjugated UDCA (tauroursodeoxycholic_acid+glycoursodeoxycholic_acid), TBAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA total BAs (total_nonUDCA_pool), nonUDCA SBAs (secondary_nonUDCA), secondary/primary ratio (SP_ratio)</a></li>
+<li class="chapter" data-level="3.3" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#create-correlation-plots-to-evaluate-association-of-udca-with-all-individual-bas"><i class="fa fa-check"></i><b>3.3</b> Create correlation plots to evaluate association of UDCA with all individual BAs</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html"><a href="analyze-the-effect-of-udca-administration-on-the-bile-acid-pool-supplementary-figure-5.html#visualization-of-significant-correlations-of-udca-with-individual-bas-r0.4"><i class="fa fa-check"></i><b>3.3.1</b> Visualization of significant correlations of UDCA with individual BAs (R&gt;0.4)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><i class="fa fa-check"></i><b>4</b> Create the bile acid pools (figure 4, supplementary figure 6,8)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-ba-pools-first-for-peri-gvhd-onset-timepoint"><i class="fa fa-check"></i><b>4.1</b> Create BA pools first for peri-GVHD-onset timepoint</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#plot-tbas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-sbas-secondary_nonudca-conjugated-conjugated_pool-unconjugated-unconjugated_pool-sulfated-sulfated_pool"><i class="fa fa-check"></i><b>4.1.1</b> Plot: TBAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA SBAs (secondary_nonUDCA), conjugated (conjugated_pool), unconjugated (unconjugated_pool), sulfated (sulfated_pool)</a></li>
+<li class="chapter" data-level="4.1.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-pies"><i class="fa fa-check"></i><b>4.1.2</b> Create pies</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-ba-pools-for-peri-engraftment-timepoint"><i class="fa fa-check"></i><b>4.2</b> Create BA pools for peri-engraftment timepoint</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#plot-ba-pools-and-gvhd-can-plot-total-bas-total_bas-pbas-primary_pool-sbas-secondary_pool-nonudca-sbas-secondary_nonudca-conjugated-conjugated_pool-unconjugated-unconjugated_pool-sulfated_pool-secondaryprimary-ratio-and-secondaryprimary-ratio"><i class="fa fa-check"></i><b>4.2.1</b> Plot BA pools and GVHD; can plot total BAs (total_BAs), PBAs (primary_pool), SBAs (secondary_pool), nonUDCA SBAs (secondary_nonUDCA), conjugated (conjugated_pool), unconjugated (unconjugated_pool), sulfated_pool, secondary/primary ratio and secondary*/primary ratio</a></li>
+<li class="chapter" data-level="4.2.2" data-path="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html"><a href="create-the-bile-acid-pools-figure-4-supplementary-figure-68.html#create-pies-1"><i class="fa fa-check"></i><b>4.2.2</b> Create pies</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><i class="fa fa-check"></i><b>5</b> Evaluate T cell modulatory BAs in patients with GVHD vs controls (figure 4)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#oxolca"><i class="fa fa-check"></i><b>5.1</b> 3oxoLCA</a></li>
+<li class="chapter" data-level="5.2" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#isolca"><i class="fa fa-check"></i><b>5.2</b> isoLCA</a></li>
+<li class="chapter" data-level="5.3" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#isodca"><i class="fa fa-check"></i><b>5.3</b> isoDCA</a></li>
+<li class="chapter" data-level="5.4" data-path="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html"><a href="evaluate-t-cell-modulatory-bas-in-patients-with-gvhd-vs-controls-figure-4.html#omca"><i class="fa fa-check"></i><b>5.4</b> OMCA</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><i class="fa fa-check"></i><b>6</b> Shotgun metagenomic sequencing: Evaluate genes of interest (figure 5, supplement figure 10)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bsh"><i class="fa fa-check"></i><b>6.1</b> BSH</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-bsh-abundance-at-peri-gvhd-onset"><i class="fa fa-check"></i><b>6.1.1</b> Evaluate BSH abundance at peri-GVHD onset</a></li>
+<li class="chapter" data-level="6.1.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-bsh-abundance-at-peri-engraftment-time-point"><i class="fa fa-check"></i><b>6.1.2</b> Evaluate BSH abundance at peri-engraftment time point</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-gene"><i class="fa fa-check"></i><b>6.2</b> Bai operon gene</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#evaluate-correlation-of-bai-operon-gene-sum-and-nonudca-secondary-bas"><i class="fa fa-check"></i><b>6.2.1</b> Evaluate correlation of bai operon gene sum and nonUDCA secondary BAs</a></li>
+<li class="chapter" data-level="6.2.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-gene-sum-in-peri-gvhd-onset"><i class="fa fa-check"></i><b>6.2.2</b> Bai operon gene sum in peri-GVHD onset</a></li>
+<li class="chapter" data-level="6.2.3" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bai-operon-individual-gene-abundance"><i class="fa fa-check"></i><b>6.2.3</b> Bai operon individual gene abundance</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#bile-acid-related-bacteria"><i class="fa fa-check"></i><b>6.3</b> Bile acid related bacteria</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#eggerthella-lenta"><i class="fa fa-check"></i><b>6.3.1</b> Eggerthella lenta</a></li>
+<li class="chapter" data-level="6.3.2" data-path="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html"><a href="shotgun-metagenomic-sequencing-evaluate-genes-of-interest-figure-5-supplement-figure-10.html#ruminococcus-gnavus"><i class="fa fa-check"></i><b>6.3.2</b> Ruminococcus gnavus</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><i class="fa fa-check"></i><b>7</b> Create landscape of all peri-GVHD-onset samples (figure 5)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#define-sample-order-from-higher-nonudca-secondary-bas-to-lower"><i class="fa fa-check"></i><b>7.1</b> Define sample order from higher nonUDCA secondary BAs to lower</a></li>
+<li class="chapter" data-level="7.2" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#gi-gvhd-plot"><i class="fa fa-check"></i><b>7.2</b> GI GVHD plot</a></li>
+<li class="chapter" data-level="7.3" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#sba-plot"><i class="fa fa-check"></i><b>7.3</b> SBA plot</a></li>
+<li class="chapter" data-level="7.4" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#a-diversity-plot"><i class="fa fa-check"></i><b>7.4</b> A-diversity plot</a></li>
+<li class="chapter" data-level="7.5" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#bile-acid-related-genes"><i class="fa fa-check"></i><b>7.5</b> Bile acid related genes</a></li>
+<li class="chapter" data-level="7.6" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#microbiome-composition"><i class="fa fa-check"></i><b>7.6</b> Microbiome composition</a></li>
+<li class="chapter" data-level="7.7" data-path="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html"><a href="create-landscape-of-all-peri-gvhd-onset-samples-figure-5.html#add-all-plots-together"><i class="fa fa-check"></i><b>7.7</b> Add all plots together</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html"><i class="fa fa-check"></i><b>8</b> Diversity, bai operon and domination</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#evaluate-correlation-of-a-diversity-and-bai-operon-sum"><i class="fa fa-check"></i><b>8.1</b> Evaluate correlation of a-diversity and bai operon sum</a></li>
+<li class="chapter" data-level="8.2" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#identify-patients-with-monodomination-by-16s"><i class="fa fa-check"></i><b>8.2</b> Identify patients with monodomination by 16S</a></li>
+<li class="chapter" data-level="8.3" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#domination-and-a-diversity"><i class="fa fa-check"></i><b>8.3</b> Domination and a-diversity</a></li>
+<li class="chapter" data-level="8.4" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#domination-and-bai-operon"><i class="fa fa-check"></i><b>8.4</b> Domination and bai operon</a></li>
+<li class="chapter" data-level="8.5" data-path="diversity-bai-operon-and-domination.html"><a href="diversity-bai-operon-and-domination.html#sbas-and-domination"><i class="fa fa-check"></i><b>8.5</b> SBAs and domination</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html"><i class="fa fa-check"></i><b>9</b> Evaluation of UDCA exposure and clinical outcomes</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#prepare-the-patient-outcome-table"><i class="fa fa-check"></i><b>9.1</b> Prepare the patient outcome table</a></li>
+<li class="chapter" data-level="9.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluate-ursodiol-exposure-and-overall-survival"><i class="fa fa-check"></i><b>9.2</b> Evaluate ursodiol exposure and overall survival</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#univariable-analysis"><i class="fa fa-check"></i><b>9.2.1</b> Univariable analysis</a></li>
+<li class="chapter" data-level="9.2.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis"><i class="fa fa-check"></i><b>9.2.2</b> Multivariable analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#evaluation-of-cumulative-incidences"><i class="fa fa-check"></i><b>9.3</b> Evaluation of cumulative incidences</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-gvhd-related-mortality"><i class="fa fa-check"></i><b>9.3.1</b> Cumulative incidence of GVHD-related mortality</a></li>
+<li class="chapter" data-level="9.3.2" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-relapseprogression-of-disease"><i class="fa fa-check"></i><b>9.3.2</b> Cumulative incidence of Relapse/progression of disease</a></li>
+<li class="chapter" data-level="9.3.3" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#cumulative-incidence-of-mortality-non-related-to-gvhd-or-relapseprogression-of-disease"><i class="fa fa-check"></i><b>9.3.3</b> Cumulative incidence of mortality non-related to GVHD or relapse/progression of disease</a></li>
+<li class="chapter" data-level="9.3.4" data-path="evaluation-of-udca-exposure-and-clinical-outcomes.html"><a href="evaluation-of-udca-exposure-and-clinical-outcomes.html#multivariable-analysis-of-gvhd-related-mortality"><i class="fa fa-check"></i><b>9.3.4</b> Multivariable analysis of GVHD-related mortality</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="scrna-seq-data-anastasia-kousa.html"><a href="scrna-seq-data-anastasia-kousa.html"><i class="fa fa-check"></i><b>10</b> scRNA seq Data: Anastasia Kousa</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="scrna-seq-data-anastasia-kousa.html"><a href="scrna-seq-data-anastasia-kousa.html#gsea-results"><i class="fa fa-check"></i><b>10.1</b> GSEA RESULTS</a></li>
+<li class="chapter" data-level="10.2" data-path="scrna-seq-data-anastasia-kousa.html"><a href="scrna-seq-data-anastasia-kousa.html#fold-change-vs-fold-change"><i class="fa fa-check"></i><b>10.2</b> FOLD CHANGE vs FOLD CHANGE</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="read-in-file.html"><a href="read-in-file.html"><i class="fa fa-check"></i><b>11</b> read in file</a></li>
+<li class="chapter" data-level="12" data-path="read-in-the-count-file---for-now-subselect-only-day-7-data-bmt_liv_int641-genes-bmt_liv_intc425.html"><a href="read-in-the-count-file---for-now-subselect-only-day-7-data-bmt_liv_int641-genes-bmt_liv_intc425.html"><i class="fa fa-check"></i><b>12</b> read in the count file - for now subselect only day 7 data (BMT_liv_int[,6:41], genes = BMT_liv_int[,c(42,5)])</a></li>
+<li class="chapter" data-level="13" data-path="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html"><i class="fa fa-check"></i><b>13</b> plot GSEA results facet by organ - Hallmarks - only D7</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Microbial Bile Acid Metabolism Shapes T Cell Responses During Inflammation</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="plot-gsea-results-facet-by-organ---hallmarks---only-d7" class="section level1 hasAnchor" number="13">
+<h1><span class="header-section-number">Chapter 13</span> plot GSEA results facet by organ - Hallmarks - only D7<a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#plot-gsea-results-facet-by-organ---hallmarks---only-d7" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/Users/miltiado/Documents/BA/Anastasia/gsea_mice/&quot;</span>)</span>
+<span id="cb146-2"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-2" aria-hidden="true" tabindex="-1"></a>gsea_result_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">pattern =</span> <span class="st">&quot;^gsea_report(.*)tsv$&quot;</span>)</span>
+<span id="cb146-3"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-3" aria-hidden="true" tabindex="-1"></a><span class="co"># within the for loop I change the order of the organs</span></span>
+<span id="cb146-4"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-4" aria-hidden="true" tabindex="-1"></a>organ_annotation <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;LIV&quot;</span>, <span class="st">&quot;LIV&quot;</span>, <span class="st">&quot;SI&quot;</span>, <span class="st">&quot;SI&quot;</span>, <span class="st">&quot;LI&quot;</span>, <span class="st">&quot;LI&quot;</span>)</span>
+<span id="cb146-5"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-5" aria-hidden="true" tabindex="-1"></a>day_annotation <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;D7&quot;</span>, <span class="st">&quot;D7&quot;</span>, <span class="st">&quot;D7&quot;</span>, <span class="st">&quot;D7&quot;</span>, <span class="st">&quot;D7&quot;</span>, <span class="st">&quot;D7&quot;</span>)</span>
+<span id="cb146-6"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-7"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-7" aria-hidden="true" tabindex="-1"></a>i<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb146-8"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-8" aria-hidden="true" tabindex="-1"></a>all_gsea_results <span class="ot">=</span> <span class="fu">tibble</span>(<span class="st">&quot;GS PATHWAY&quot;</span><span class="ot">=</span><span class="fu">factor</span>(), <span class="st">&quot;GS DETAILS&quot;</span><span class="ot">=</span><span class="fu">integer</span>(), <span class="st">&quot;SIZE&quot;</span><span class="ot">=</span><span class="fu">double</span>(), <span class="st">&quot;ES&quot;</span><span class="ot">=</span><span class="fu">double</span>(), <span class="st">&quot;NES&quot;</span><span class="ot">=</span><span class="fu">double</span>(), <span class="st">&quot;NOM p-val&quot;</span><span class="ot">=</span><span class="fu">double</span>(), <span class="st">&quot;FDR q-val&quot;</span><span class="ot">=</span><span class="fu">double</span>(), <span class="st">&quot;FWER p-val&quot;</span><span class="ot">=</span><span class="fu">double</span>(), <span class="st">&quot;RANK&quot;</span><span class="ot">=</span><span class="fu">integer</span>(), <span class="st">&quot;LEADING EDGE&quot;</span><span class="ot">=</span><span class="fu">factor</span>(), <span class="st">&quot;GROUP&quot;</span><span class="ot">=</span><span class="fu">factor</span>(), <span class="st">&quot;ORGAN&quot;</span> <span class="ot">=</span> <span class="fu">factor</span>(), <span class="st">&quot;DAY&quot;</span> <span class="ot">=</span> <span class="fu">factor</span>())</span>
+<span id="cb146-9"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-10"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (path <span class="cf">in</span> gsea_result_files[<span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]){</span>
+<span id="cb146-11"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-11" aria-hidden="true" tabindex="-1"></a>  gsea_results <span class="ot">=</span> <span class="fu">tibble</span>(<span class="fu">read.table</span>(path, <span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>, <span class="at">row.names =</span> <span class="dv">1</span>, <span class="at">skip =</span> <span class="dv">1</span>))</span>
+<span id="cb146-12"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(gsea_results) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;GS PATHWAY&quot;</span>, <span class="st">&quot;GS DETAILS&quot;</span>, <span class="st">&quot;SIZE&quot;</span>, <span class="st">&quot;ES&quot;</span>, <span class="st">&quot;NES&quot;</span>, <span class="st">&quot;NOM p-val&quot;</span>, <span class="st">&quot;FDR q-val&quot;</span>, <span class="st">&quot;FWER p-val&quot;</span>, <span class="st">&quot;RANK&quot;</span>, <span class="st">&quot;LEADING EDGE&quot;</span>, <span class="st">&quot;GROUP&quot;</span>)</span>
+<span id="cb146-13"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-13" aria-hidden="true" tabindex="-1"></a>  gsea_results<span class="sc">$</span>GROUP <span class="ot">=</span> <span class="fu">rep</span>(<span class="fu">as.factor</span>(<span class="fu">substring</span>(path, <span class="dv">64</span>,<span class="dv">76</span>)), <span class="fu">nrow</span>(gsea_results))</span>
+<span id="cb146-14"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-14" aria-hidden="true" tabindex="-1"></a>  gsea_results<span class="sc">$</span>ORGAN <span class="ot">=</span> <span class="fu">rep</span>(<span class="fu">as.factor</span>(organ_annotation[i]), <span class="fu">nrow</span>(gsea_results))</span>
+<span id="cb146-15"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-15" aria-hidden="true" tabindex="-1"></a>  gsea_results<span class="sc">$</span>DAY <span class="ot">=</span> <span class="fu">rep</span>(<span class="fu">as.factor</span>(day_annotation[i]), <span class="fu">nrow</span>(gsea_results))</span>
+<span id="cb146-16"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-16" aria-hidden="true" tabindex="-1"></a>  all_gsea_results <span class="ot">=</span> <span class="fu">rbind</span>(all_gsea_results, gsea_results)</span>
+<span id="cb146-17"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-17" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span>i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb146-18"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb146-19"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-20"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-21"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-21" aria-hidden="true" tabindex="-1"></a>all_gsea_results <span class="ot">=</span> all_gsea_results[all_gsea_results<span class="sc">$</span>NES<span class="sc">!=</span><span class="st">&quot;---&quot;</span>,]</span>
+<span id="cb146-22"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-22" aria-hidden="true" tabindex="-1"></a>all_gsea_results<span class="sc">$</span>NES <span class="ot">=</span> <span class="fu">as.double</span>(all_gsea_results<span class="sc">$</span>NES)</span>
+<span id="cb146-23"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-24"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-24" aria-hidden="true" tabindex="-1"></a>all_gsea_results<span class="sc">$</span><span class="st">`</span><span class="at">-10log(FDR q-val)</span><span class="st">`</span> <span class="ot">=</span> <span class="sc">-</span><span class="fu">log</span>(all_gsea_results<span class="sc">$</span><span class="st">`</span><span class="at">FDR q-val</span><span class="st">`</span><span class="sc">+</span><span class="fl">0.00001</span>,<span class="dv">10</span>)</span>
+<span id="cb146-25"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-25" aria-hidden="true" tabindex="-1"></a>all_gsea_results<span class="sc">$</span>trFDR <span class="ot">=</span> all_gsea_results<span class="sc">$</span><span class="st">`</span><span class="at">-10log(FDR q-val)</span><span class="st">`</span></span>
+<span id="cb146-26"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-27"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-27" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggdotchart</span>(all_gsea_results[(all_gsea_results<span class="sc">$</span><span class="st">`</span><span class="at">FDR q-val</span><span class="st">`</span><span class="sc">&lt;=</span><span class="fl">0.05</span>) ,], <span class="st">&#39;GS PATHWAY&#39;</span>, <span class="st">&#39;NES&#39;</span>, <span class="at">shape=</span><span class="dv">19</span>,  <span class="at">sorting =</span> <span class="st">&quot;ascending&quot;</span>,</span>
+<span id="cb146-28"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-28" aria-hidden="true" tabindex="-1"></a>                <span class="at">add =</span> <span class="st">&quot;segments&quot;</span>,<span class="at">color=</span> <span class="st">&#39;NES&#39;</span>,  <span class="at">rotate=</span><span class="cn">TRUE</span>, <span class="at">dot.size=</span><span class="st">&#39;trFDR&#39;</span>, <span class="at">ggtheme =</span> <span class="fu">theme_pubr</span>())  <span class="sc">+</span><span class="fu">facet_grid</span>(DAY<span class="sc">~</span>ORGAN) <span class="sc">+</span> </span>
+<span id="cb146-29"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_gradientn</span>(<span class="at">colours =</span> dichromat<span class="sc">::</span>colorschemes<span class="sc">$</span>DarkRedtoBlue<span class="fl">.12</span>) <span class="sc">+</span> </span>
+<span id="cb146-30"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;lightgray&quot;</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>) <span class="sc">+</span> <span class="fu">font</span>(<span class="st">&quot;xy.text&quot;</span>, <span class="at">size=</span><span class="dv">9</span>)</span>
+<span id="cb146-31"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-32"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-33"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-33" aria-hidden="true" tabindex="-1"></a><span class="co"># workaround - add the right color to the background strip </span></span>
+<span id="cb146-34"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-34" aria-hidden="true" tabindex="-1"></a>p2e <span class="ot">&lt;-</span> <span class="fu">ggplot_gtable</span>(<span class="fu">ggplot_build</span>(p))</span>
+<span id="cb146-35"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-35" aria-hidden="true" tabindex="-1"></a>strip_both <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">grepl</span>(<span class="st">&#39;strip-&#39;</span>, p2e<span class="sc">$</span>layout<span class="sc">$</span>name))</span>
+<span id="cb146-36"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-36" aria-hidden="true" tabindex="-1"></a>fills <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#FC4E07&quot;</span>, <span class="st">&quot;#E7B800&quot;</span>,  <span class="st">&quot;#00AFBB&quot;</span>)</span>
+<span id="cb146-37"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-37" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb146-38"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-39"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> strip_both) {</span>
+<span id="cb146-40"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-40" aria-hidden="true" tabindex="-1"></a>  j <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">grepl</span>(<span class="st">&#39;rect&#39;</span>, p2e<span class="sc">$</span>grobs[[i]]<span class="sc">$</span>grobs[[<span class="dv">1</span>]]<span class="sc">$</span>childrenOrder))</span>
+<span id="cb146-41"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-41" aria-hidden="true" tabindex="-1"></a>  p2e<span class="sc">$</span>grobs[[i]]<span class="sc">$</span>grobs[[<span class="dv">1</span>]]<span class="sc">$</span>children[[j]]<span class="sc">$</span>gp<span class="sc">$</span>fill <span class="ot">&lt;-</span> fills[k]</span>
+<span id="cb146-42"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-42" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> k<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb146-43"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb146-44"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb146-44" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.draw</span>(p2e)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb147-1" aria-hidden="true" tabindex="-1"></a>bile_acid_LIV <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;Serpina6&#39;</span>,  <span class="st">&#39;Cyp7b1&#39;</span>,   <span class="st">&#39;Slco1a4&#39;</span>,  <span class="st">&#39;Acsl5&#39;</span>,    <span class="st">&#39;Cat&#39;</span>,  <span class="st">&#39;Abcg8&#39;</span>,    <span class="st">&#39;Fads2&#39;</span>,    <span class="st">&#39;Crot&#39;</span>, <span class="st">&#39;Ttr&#39;</span>,  <span class="st">&#39;Bbox1&#39;</span>,    <span class="st">&#39;Fads1&#39;</span>,    <span class="st">&#39;Paox&#39;</span>, <span class="st">&#39;Agxt&#39;</span>, <span class="st">&#39;Idh1&#39;</span>, <span class="st">&#39;Ephx2&#39;</span>,    <span class="st">&#39;Slc23a2&#39;</span>,  <span class="st">&#39;Sult1b1&#39;</span>,  <span class="st">&#39;Nr0b2&#39;</span>,    <span class="st">&#39;Abcd3&#39;</span>,    <span class="st">&#39;Npc1&#39;</span>, <span class="st">&#39;Lonp2&#39;</span>,    <span class="st">&#39;Idh2&#39;</span>, <span class="st">&#39;Abcd2&#39;</span>,    <span class="st">&#39;Aldh1a1&#39;</span>,  <span class="st">&#39;Hsd17b11&#39;</span>, <span class="st">&#39;Pex7&#39;</span>, <span class="st">&#39;Sod1&#39;</span>, <span class="st">&#39;Pecr&#39;</span>, <span class="st">&#39;Nr3c2&#39;</span>,    <span class="st">&#39;Hsd17b6&#39;</span>,  <span class="st">&#39;Slc22a18&#39;</span>, <span class="st">&#39;Isoc1&#39;</span>,    <span class="st">&#39;Nudt12&#39;</span>,   <span class="st">&#39;Aldh9a1&#39;</span>)</span>
+<span id="cb147-2"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb147-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb147-3"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb147-3" aria-hidden="true" tabindex="-1"></a>p2f <span class="ot">&lt;-</span> <span class="fu">pheatmap</span>(v<span class="sc">$</span>E[v<span class="sc">$</span>genes<span class="sc">$</span>external_gene_name <span class="sc">%in%</span> bile_acid_LIV,<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">8</span>, <span class="dv">11</span>, <span class="dv">13</span>,<span class="dv">14</span>, <span class="dv">17</span>)], <span class="at">scale =</span> <span class="st">&quot;row&quot;</span>, </span>
+<span id="cb147-4"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb147-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">cellwidth =</span> <span class="dv">15</span>, <span class="at">cellheight =</span> <span class="dv">9</span>, <span class="at">color =</span> colorschemes<span class="sc">$</span>DarkRedtoBlue<span class="fl">.18</span>, </span>
+<span id="cb147-5"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb147-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">labels_row =</span> v[v<span class="sc">$</span>genes<span class="sc">$</span>external_gene_name <span class="sc">%in%</span> bile_acid_LIV,]<span class="sc">$</span>genes<span class="sc">$</span>external_gene_name,</span>
+<span id="cb147-6"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb147-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">fontsize =</span> <span class="dv">9</span>, <span class="at">cluster_cols =</span> <span class="cn">TRUE</span>, <span class="at">cluster_rows =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="plot-gsea-results-facet-by-organ---hallmarks---only-d7.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggdraw(grid.draw(p2e)) | p2f</span></span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="read-in-the-count-file---for-now-subselect-only-day-7-data-bmt_liv_int641-genes-bmt_liv_intc425.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/orianamiltiadous/BAs_and_GVHD/edit/main/10_RNAseq.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
